@@ -1,0 +1,4 @@
+Ficheiro: publicx.txt
+Publicaçoes: 136127
+Numero total de autores: 368014
+Intervalo de anos: [1968-2013]
