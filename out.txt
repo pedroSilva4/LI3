@@ -2,5 +2,6 @@ clear
 [H[2Jrm -f *.o executavel 
 gcc -c parser.c
 gcc -c indAuthors.c
-gcc -o executavel GESTAUTS.c parser.o indAuthors.o
+gcc -c catalog.c	
+gcc -o executavel GESTAUTS.c catalog.o parser.o indAuthors.o
 ./executavel PUBLICX_FILES/publicx.txt 

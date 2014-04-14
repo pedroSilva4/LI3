@@ -7,7 +7,7 @@
 
 
 
-Catalog* init(Catalog* catalog)
+Catalog* catInit(Catalog* catalog)
 {
 	Catalog* cata = malloc(56 * sizeof(cNode));
 
@@ -20,7 +20,7 @@ catalog = cata;
 return catalog;
 }
 
-int hash(int year)
+int catHash(int year)
 {
 	int res = year-1960;
 
@@ -30,13 +30,14 @@ int hash(int year)
 	return res;
 }
 
-int exists(char*nome,Relations* rel)
+int existsRel(char*nome,Relations* rel)
 {	int res = 0;
 		Relations aux = *rel;
 		while(aux)
 		{
 			if(!strcmp(nome,aux->name))
 			{
+
 				aux->ntimes++;
 				res=1;
 				return res;
@@ -46,37 +47,48 @@ int exists(char*nome,Relations* rel)
 return res;
 } 
 
-void addRelations(Relations* rel,char* nome,char** relations)
+void addRelations(Relations* rel,char* nome,char** relations,int na)
 {
 	if(! *rel)
 		{
+			
 			Relations new = NULL;
 			int i = 0;
-			while(relations[i])
+			if(!relations){
+				
+				*rel = NULL;
+				return;
+			}
+
+			while(i<na)
 			{
 				if(strcmp(relations[i],nome) !=0 )
 				{
+					
 					Relations rel_null = malloc(sizeof(rNode));
 					rel_null->name = strdup(relations[i]);
 					rel_null->ntimes = 1;
 					rel_null->next = new;
-
 					new = rel_null;
+
 				}
+				
 			i++;
+
 			}
-		*rel= new;
+			*rel = new;
+		return;
 		}
 
 	else
 	{
 
 		int i = 0;
-			while(relations[i])
+			while(i<na)
 			{
 				if(strcmp(relations[i],nome) !=0 )
 				{
-					if(!exists(relations[i],rel)){
+					if(!existsRel(relations[i],rel)){
 					Relations relaux = malloc(sizeof(rNode));
 					relaux->name = strdup(relations[i]);
 					relaux->ntimes  = 1;
@@ -90,7 +102,7 @@ void addRelations(Relations* rel,char* nome,char** relations)
 	}
 }
 
-int existsauthor(Catalog* branch,char* nome,char** rel)
+int existsauthor(Catalog* branch,char* nome,char** rel,int na)
 {
 	int res = 0;
 	Catalog aux = *branch;
@@ -102,7 +114,7 @@ int existsauthor(Catalog* branch,char* nome,char** rel)
 		if(!strcmp(aux->author,nome))
 		{
 			aux->np++;
-			addRelations(&aux->relations,nome,rel);
+			addRelations(&aux->relations,nome,rel,na);
 			return 1;
 		}
 		aux = aux->next;
@@ -110,7 +122,7 @@ int existsauthor(Catalog* branch,char* nome,char** rel)
 	return res;
 }
 
-Catalog placeAuthor(Catalog branch,char* nome,char** relations)
+Catalog placeAuthor(Catalog branch,char* nome,char** relations,int na)
 {
 	if(!branch)
 	{
@@ -119,7 +131,7 @@ Catalog placeAuthor(Catalog branch,char* nome,char** relations)
 		br_null->author = strdup(nome);
 		br_null->np  =1;
 		br_null->relations =NULL;
-		addRelations(&br_null->relations,nome,relations);
+		addRelations(&br_null->relations,nome,relations,na);
 		br_null->next = branch;
 		branch = br_null;
 		
@@ -130,14 +142,16 @@ Catalog placeAuthor(Catalog branch,char* nome,char** relations)
 		
 
 		//verificar se o autor ja existe na estrutura
-		if(!(existsauthor(&branch , nome,relations)))
+		if(!(existsauthor(&branch , nome,relations,na)))
 		{
 			
 			Catalog aux = malloc(sizeof(cNode));
 			aux->author = strdup(nome);
 			aux->np=1;
 			aux->relations =NULL;
-			addRelations(&aux->relations,nome,relations);
+
+			addRelations(&aux->relations,nome,relations,na);
+
 			aux->next =branch;
 			branch = aux;
 			return branch;
@@ -152,21 +166,22 @@ Catalog placeAuthor(Catalog branch,char* nome,char** relations)
 
 Catalog* add(Catalog* catalog,  int year, char** nomes, int na)
 {
-	int ind = hash(year);
+	int ind = catHash(year);
 	int i = 0;
 	
 	for(i;i<na;i++)
 	{
 		
-
-		catalog[ind] = placeAuthor(catalog[ind],nomes[i],nomes);
+		
+		catalog[ind] = placeAuthor(catalog[ind],nomes[i],nomes,na);
 		
 
 	}
+	
 	return catalog;
 }
 
-
+/*
 int main()
 {
 	Catalog* cata;
@@ -203,3 +218,4 @@ return 1;
 
 
 }
+*/

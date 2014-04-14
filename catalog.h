@@ -17,6 +17,8 @@ typedef struct entry
 	struct entry * next;
 }*Catalog,cNode;
 
+Catalog * catInit(Catalog*);
+Catalog * add(Catalog*,int,char**,int);
 
 
 #endif

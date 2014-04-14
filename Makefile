@@ -12,10 +12,13 @@ parser.o: parser.c parser.h
 indAuthors.o: indAuthors.c indAuthors.h
 	gcc -c indAuthors.c
 
-executavel: GESTAUTS.c parser.o indAuthors.o
-	gcc -o executavel GESTAUTS.c parser.o indAuthors.o
+catalog.o: catalog.c catalog.h
+	gcc -c catalog.c	
+
+executavel: GESTAUTS.c parser.o indAuthors.o catalog.o
+	gcc -o executavel GESTAUTS.c catalog.o parser.o indAuthors.o
 
 exec:	executavel
-	./executavel PUBLICX_FILES/publicx_x4.txt 
+	./executavel PUBLICX_FILES/publicx.txt 
 
 all: clear clean exec
