@@ -6,27 +6,30 @@
 
 
 
-Indice* init(Indice* ind)
+void init(Indice* indice)
 {
 
-   Indice res[27];
-
-   int i = 0;
-   for(i;i<27;i++)
-   {
-   	res[i] = malloc(sizeof(Node));
-   	res[i] = NULL;
-   }
-
-   ind = res;
-   return ind ;
+Indice* res = (Indice * ) malloc(28*sizeof(Node));
+indice = res;
+	int ind = 0;
+	while(ind<28)
+	{
+		indice[ind] = malloc(sizeof(Node));
+		indice[ind] = NULL;
+		ind++;
+	}
 	
+//return ind;
 }
 
 int hash(char* name)
 {
 	if(name[0] >='A' && name[0]<='Z')
 		return name[0]-'A';
+	else
+		if(name[0] >='a' && name[0]<='z')
+			return name[0]-'a';
+	
 	else return 26;
 }
 
@@ -66,6 +69,7 @@ Indice add_sort(Indice branch, char* nome)
 	}
 	else
 	{	
+
 		if(strcmp(branch->name,nome) > 0)
 		{
 			node->next = branch;
@@ -81,7 +85,7 @@ Indice add_sort(Indice branch, char* nome)
 			}
 			else
 			{
-				branch->next = add_sort(branch->next,nome);
+				//branch->next = add_sort(branch->next,nome);
 				return branch;
 			}
 		}
@@ -97,6 +101,8 @@ Indice add_sort(Indice branch, char* nome)
 Indice* addToInd(Indice* ind , char* nome)
 {
 
+	if(exists(ind,nome))
+		return ind;
 	int it = hash(nome);
 	if(!ind[it])
 	{

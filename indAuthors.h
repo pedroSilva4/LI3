@@ -13,7 +13,7 @@ typedef struct indNode
 //typedef struct nameTree nameTree;
 
 
-Indice* init(Indice* );
+void init(Indice* );
 
 Indice* addToInd(Indice*, char*);
 

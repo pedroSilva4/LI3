@@ -25,7 +25,7 @@ while(string[j] !='\n')
 }
 
 strcpy(string,aux2);
-
+free(aux2);
 return aux;
 
 }
@@ -50,14 +50,14 @@ int k = 0;
 	}
 	//printf("ok eat saida\n");
 strcpy(string,aux);
-
+free(aux);
 
 }
 
 int getyear(char* string)
 { //printf("stringlol : %s\n",string );
 	int i =  atoi(string);
-
+free(string);
 	return i;
 }
 
@@ -110,7 +110,7 @@ while(string[0]!='\n'|| string[0]!='\0')
 *nap= na;
 *year = ano;
 *nomes = parsedNames;
-
+//free(*parsedNames);
 }
 
 

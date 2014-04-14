@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-
 #include <string.h>
 #include "indAuthors.h"
 #include "parser.h"
@@ -23,32 +22,14 @@ int main(int argc,char** argv)
 	char * line = NULL;
 	size_t len = 0;
 	int ano;
-	Indice* indice =(Indice * ) malloc(28*sizeof(Node));
-	int ind = 0;
-	while(ind<28)
-	{
-		indice[ind] = malloc(sizeof(Node));
-		indice[ind] = NULL;
-		ind++;
-	}
+	Indice* indice  =NULL;
+	 
 
-char** nomes;
-int i = 0;
+
 	while ((read = getline(&line, &len, fl)) != -1) {
 	int nap= 0;
-	
-	lineParser(line,&autores, &ano,&nap,&nomes);
-	//printf("ok %d\n", i);
-  
-  //i++;
-// printf("nap-->%d\n",nap);
-
-	indice = addToInd(indice,nomes[0]);
-	
-
-nomes = NULL;
-i = 0;
-  // indice = addToInd(indice,nomes[0]);
+	char** nomes;
+	lineParser(line,&autores, &ano,&nap,&nomes); 
 
     if(ano > maior_ano)
     	maior_ano = ano;
@@ -56,26 +37,27 @@ i = 0;
     if(ano < menor_ano)
     	menor_ano = ano;
  
-    
+while(nap>0){
+ printf("%s\n", nomes[nap-1]);
+nap--;
+}
+
+    //printf("%s\n", nomes[0]);
     entradas++;
-  //printf("%d\n",entradas );
+ 
+    free(nomes);
+    len= 0;
+    
+
 }
 printf("Ficheiro: %s\n", filename);
 printf("Publicaçoes: %d\n",entradas );
 printf("Numero total de autores: %d\n",autores );
 printf("Intervalo de anos: [%d-%d]\n", menor_ano,maior_ano);
 
-
-
+//printIndice(indice);
+free(line);
 fclose(fl);
-
-
- 
-
-
-
-
-
-
+free(indice);
 return 0;
 }
