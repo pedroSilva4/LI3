@@ -11,6 +11,7 @@ int main(int argc,char** argv)
 		printf("Wrong arguments!\nSintax: GESTAUTS 'file_path'\n");
 	return 1;
    }
+   time_t seconds = time(NULL);
  
  int entradas = 0;
 	int menor_ano = 2015;
@@ -60,9 +61,12 @@ printf("Publicaçoes: %d\n",entradas );
 printf("Numero total de autores: %d\n",autores );
 printf("Intervalo de anos: [%d-%d]\n", menor_ano,maior_ano);
 
-printIndice(indice);
+//printIndice(indice);
 free(line);
 fclose(fl);
 free(indice);
+
+time_t seconds2 = time(NULL);
+printf("time in seconds :: %ld\n", (seconds2-seconds) );
 return 0;
 }
