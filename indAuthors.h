@@ -7,10 +7,8 @@ typedef struct indNode
 {
 	char* name;
 	struct indNode *next;
+
 }*Indice, Node;
-
-
-//typedef struct nameTree nameTree;
 
 
 void init(Indice* );

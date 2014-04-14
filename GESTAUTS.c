@@ -22,10 +22,14 @@ int main(int argc,char** argv)
 	char * line = NULL;
 	size_t len = 0;
 	int ano;
-	Indice* indice  =NULL;
-	 
+	Indice* indice;
+	 int i = 0;
+	indice = malloc(28*sizeof(Node));
+	for(i;i<28;i++)
+		indice[i] = NULL;
 
 
+i=0 ;
 	while ((read = getline(&line, &len, fl)) != -1) {
 	int nap= 0;
 	char** nomes;
@@ -38,7 +42,8 @@ int main(int argc,char** argv)
     	menor_ano = ano;
  
 while(nap>0){
- printf("%s\n", nomes[nap-1]);
+
+ indice = addToInd(indice ,nomes[nap-1]);
 nap--;
 }
 
@@ -55,7 +60,7 @@ printf("Publicaçoes: %d\n",entradas );
 printf("Numero total de autores: %d\n",autores );
 printf("Intervalo de anos: [%d-%d]\n", menor_ano,maior_ano);
 
-//printIndice(indice);
+printIndice(indice);
 free(line);
 fclose(fl);
 free(indice);

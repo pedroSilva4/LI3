@@ -18,8 +18,6 @@ indice = res;
 		indice[ind] = NULL;
 		ind++;
 	}
-	
-//return ind;
 }
 
 int hash(char* name)
@@ -55,46 +53,42 @@ int exists(Indice* ind ,char* nome)
 return 0;
 }
 
-Indice add_sort(Indice branch, char* nome)
+void add_sort(Indice* branch, char* nome)
 {
 	Indice node = malloc(sizeof(Node));
 				node-> name = strdup(nome);
 				node->next = NULL;
 
-	if(!branch)
-	{
+	
+		//*branch = node;
 		
-		branch = node;
-		return branch;
-	}
-	else
-	{	
+		Indice tail = *branch;
+		Indice head = malloc(sizeof(Node));
+		//head = NULL;
+	
+		while(tail && strcmp(tail->name,nome) < 0)
+		{
+			
+			head = tail;
 
-		if(strcmp(branch->name,nome) > 0)
-		{
-			node->next = branch;
-			branch = node;
-			return branch;
-		}
-		if(strcmp(branch->name,nome) < 0)
-		{
-			if(!branch->next)
-			{	
-					branch->next = node;
-					return branch;
-			}
-			else
-			{
-				//branch->next = add_sort(branch->next,nome);
-				return branch;
-			}
+			tail = tail->next;
 		}
 		
+		
+		if(!head)
+		{
+			node->next = *branch;
+			
+		}
+
+		else
+		{
+			head->next = node;
+			node->next = tail;
+		}
+	
 
 	
-	}
-
-	return branch;
 	
 }
 
@@ -103,26 +97,19 @@ Indice* addToInd(Indice* ind , char* nome)
 
 	if(exists(ind,nome))
 		return ind;
+
 	int it = hash(nome);
 	if(!ind[it])
 	{
 		Indice aux2 = malloc(sizeof(Node));
-		
-		
 		aux2->name = strdup(nome);
 		aux2->next = NULL;
-		//printf(" dont exists\n");
 		ind[it] = aux2;
-		//printf("inserted\n");
 	}
 	else
 	{
-		//printf("exists\n");
-		ind[it] = add_sort(ind[it], nome);
+	add_sort(&ind[it], nome);
 	}
-
-
-//printf("%s\n",nome);
 return ind;
 }
 
@@ -201,8 +188,12 @@ while(i<27)
 int k = 0;
 int j = 0 ;
 
-top = add_ArrayToInd(top,nomes,20);
-
+printf("ainda imprime\n");
+for(k = 0; k<21;k++){
+top = addToInd(top,nomes[k]);
+printf("%d\n", k);
+}
+printf("ainda imprime\n");
 printIndice(top);
 	return 1;
 }
