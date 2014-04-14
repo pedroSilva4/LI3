@@ -7,17 +7,18 @@
 
 
 
-void init(Catalog** catalog)
+Catalog* init(Catalog* catalog)
 {
-	Catalog* catlog = (Catalog*) malloc(56 * sizeof(cNode));
-int i;
+	Catalog* cata = malloc(56 * sizeof(cNode));
+
+	int i;
 	for(i=0;i<56;i++)
 	{
-		catlog[i] = NULL;
+	cata[i] = NULL;
 	}
-
-	*catalog = catlog;
-} 
+catalog = cata;
+return catalog;
+}
 
 int hash(int year)
 {
@@ -26,7 +27,6 @@ int hash(int year)
 	if(res>55)
 		return 55;
 
-	 
 	return res;
 }
 
@@ -45,6 +45,7 @@ int exists(char*nome,Relations* rel)
 		}
 return res;
 } 
+
 void addRelations(Relations* rel,char* nome,char** relations)
 {
 	if(! *rel)
@@ -89,68 +90,116 @@ void addRelations(Relations* rel,char* nome,char** relations)
 	}
 }
 
-void placeAuthor(Catalog* branch,char* nome,char** relations)
+int existsauthor(Catalog* branch,char* nome,char** rel)
 {
-	if(!catalog)
+	int res = 0;
+	Catalog aux = *branch;
+	
+	
+	while(aux)
 	{
+		
+		if(!strcmp(aux->author,nome))
+		{
+			aux->np++;
+			addRelations(&aux->relations,nome,rel);
+			return 1;
+		}
+		aux = aux->next;
+	} 
+	return res;
+}
+
+Catalog placeAuthor(Catalog branch,char* nome,char** relations)
+{
+	if(!branch)
+	{
+		
 		Catalog br_null = malloc(sizeof(cNode));
 		br_null->author = strdup(nome);
+		br_null->np  =1;
 		br_null->relations =NULL;
 		addRelations(&br_null->relations,nome,relations);
-		br_null->next = NULL;
-		*branch = br_null;
+		br_null->next = branch;
+		branch = br_null;
+		
+		return branch;
 	}
 	else
 	{
+		
+
 		//verificar se o autor ja existe na estrutura
+		if(!(existsauthor(&branch , nome,relations)))
+		{
+			
+			Catalog aux = malloc(sizeof(cNode));
+			aux->author = strdup(nome);
+			aux->np=1;
+			aux->relations =NULL;
+			addRelations(&aux->relations,nome,relations);
+			aux->next =branch;
+			branch = aux;
+			return branch;
+		}
 		//existsauthor
 		//caso exista incrementar o seu numero de obras e os seus co-autores
-
+		
 	}
+	return branch;
 }
 
 
-void add(Catalog** catalog,  int year, char** nomes, int na)
+Catalog* add(Catalog* catalog,  int year, char** nomes, int na)
 {
 	int ind = hash(year);
 	int i = 0;
-	for(i;i<nap;i++)
+	
+	for(i;i<na;i++)
 	{
-		placeAuthor(&catalog[ind],nomes[i],nomes);
+		
+
+		catalog[ind] = placeAuthor(catalog[ind],nomes[i],nomes);
+		
+
 	}
+	return catalog;
 }
 
 
 int main()
 {
 	Catalog* cata;
-	init(&cata);
-int i;
-//for(i=0;i<56;i++)
-	//if(cata[i] == NULL) printf("lol\n");
 
-
-
-
-
-
-Relations rel = NULL;
-
+	cata = init(cata);
 char* nomes[] = {"ola","asd","tone","quim"};
+char* nomes2[] = {"asd","tone","quim"};
 
- addRelations(&rel,nomes[0],nomes);
 
- char* nomes2[] = {"asd","tone","quim"};
 
- addRelations(&rel,nomes[0],nomes2);
+cata = add(cata,2012,nomes,4);
+cata  = add(cata,2012,nomes2,3);
 
-while(rel)
+int i=0;
+for(;i<56;i++)
 {
-	printf("%s\n",rel->name);
-	printf("%d\n",rel->ntimes);
-	rel =rel->next;
+	if(cata[i])
+	{
+		printf(":::::::ANO %d::::::::\n", i+1960);
+		while(cata[i]){
+		printf("%s\n",cata[i]->author );
+		printf("%d\n",cata[i]->np);
+		while(cata[i]->relations)
+		{
+			printf("rel :: %s ++ ntimes:: %d\n",cata[i]->relations->name,cata[i]->relations->ntimes);
+			cata[i]->relations = cata[i]->relations->next;
+		}
+		cata[i] = cata[i]->next;
+		}
+	}
 }
-	return 1;
+
+return 1;
 
 
 }
