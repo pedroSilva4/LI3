@@ -19,6 +19,6 @@ GESTAUTS: GESTAUTS.c parser.o indAuthors.o catalog.o
 	gcc -o GESTAUTS GESTAUTS.c catalog.o parser.o indAuthors.o
 
 exec: GESTAUTS
-	./GESTAUTS PUBLICX_FILES/publicx.txt 
+	./GESTAUTS PUBLICX_FILES/publicx_x6.txt 
 
 all: clear clean exec
