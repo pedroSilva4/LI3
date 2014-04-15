@@ -14,11 +14,15 @@ typedef struct entry
 	char * author;
 	int np;	//numero publicações desse autor nesse ano
 	Relations relations;//autores com que publicou nesse ano
-	struct entry * next;
+	struct entry * right;
+	struct entry *left;
+	
+	
 }*Catalog,cNode;
 
 Catalog * catInit(Catalog*);
 Catalog * add(Catalog*,int,char**,int);
+void printCatalog(Catalog *);
 
 
 #endif

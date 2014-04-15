@@ -6,19 +6,14 @@
 typedef struct indNode
 {
 	char* name;
-	struct indNode *next;
+	struct indNode *right;
+	struct indNode *left;
 
 }*Indice, Node;
 
-
-void init(Indice* );
-
-Indice* addToInd(Indice*, char*);
-
-Indice* add_ArrayToInd(Indice* ind, char* arr[], int size);
-
-char* printInd(Indice*,int);
-
+Indice* initInd(Indice*);
+Indice* addToInd(Indice*,char*);
+void printIndice(Indice*);
 
 
 #endif

@@ -6,18 +6,19 @@
 
 
 
-void init(Indice* indice)
+Indice* initInd(Indice* indice)
 {
 
 Indice* res = (Indice * ) malloc(28*sizeof(Node));
-indice = res;
+
 	int ind = 0;
 	while(ind<28)
 	{
-		indice[ind] = malloc(sizeof(Node));
-		indice[ind] = NULL;
+		res[ind] = NULL;
 		ind++;
 	}
+	indice = res;
+	return indice;
 }
 
 int hash(char* name)
@@ -31,123 +32,70 @@ int hash(char* name)
 	else return 26;
 }
 
-int exists(Indice* ind ,char* nome)
+void add_sort(Indice* branch, Indice node)
 {
-	if(ind == NULL) return 0;
-
-	int it = hash(nome);
-	if(ind[it]==NULL) return 0;
-	
-	else
+	Indice aux = *branch;
+	if(!*branch)
 	{
-		Indice aux =(Indice) malloc(sizeof(Node));
-		aux = ind[it];
-		while(aux)
-		{
-			if(!strcmp(aux->name,nome)) return 1;
-
-			aux= aux->next;
-		}
+		*branch = node;
+		//return branch;
 	}
-
-return 0;
-}
-
-void add_sort(Indice* branch, char* nome)
-{
-	Indice node = malloc(sizeof(Node));
-				node-> name = strdup(nome);
-				node->next = NULL;
-
-	
-		//*branch = node;
-		
-		Indice tail = *branch;
-		Indice head = malloc(sizeof(Node));
-		//head = NULL;
-	
-		while(tail && strcmp(tail->name,nome) < 0)
+	else 
+	{
+		if(strcmp(aux->name,node->name) < 0 )
 		{
-			
-			head = tail;
-
-			tail = tail->next;
+			//printf("%s é maior do que %s\n", node->name, branch->name);
+				add_sort(&aux->right,node);
 		}
-		
-		
-		if(!head)
-		{
-			node->next = *branch;
-			
-		}
-
 		else
 		{
-			head->next = node;
-			node->next = tail;
+			if(strcmp(aux->name,node->name) > 0 )
+			{
+			//	printf("%s é menor do que %s\n", node->name, branch->name);
+				add_sort(&aux->left,node);
+			}
 		}
 	
-
-	
-	
+	}		
 }
 
 Indice* addToInd(Indice* ind , char* nome)
 {
-
-	if(exists(ind,nome))
-		return ind;
-
 	int it = hash(nome);
-	if(!ind[it])
-	{
-		Indice aux2 = malloc(sizeof(Node));
-		aux2->name = strdup(nome);
-		aux2->next = NULL;
-		ind[it] = aux2;
-	}
-	else
-	{
-	add_sort(&ind[it], nome);
-	}
+
+	Indice node = malloc(sizeof(Node));
+				node-> name = strdup(nome);
+				node->right = NULL;
+				node->left = NULL;
+
+	 add_sort(&ind[it], node);
+
 return ind;
 }
 
-
-Indice* add_ArrayToInd(Indice* ind, char* arr[], int size)
+void printBranch(Indice ind)
 {
-	int i = 0;
-	while(i<=size)
+ if(ind)
 	{
-		ind = addToInd(ind,arr[i]);
-		i++;
+			printBranch(ind->left);
+			printf("%s\n",ind->name);
+			printBranch(ind->right);
 	}
-
-	return ind;
+	
 }
-
 void printIndice(Indice* ind)
 {
 	printf("::Indice Autores::\n");
-	Indice* aux = ind ;
+	 
 	int i = 0;
 	while(i<27)
 	{
-		
-		Indice aux2 = malloc(sizeof(Node));
-		aux2= aux[i];
-		while(aux2)
-		{
-			printf("%d -->%s\n", hash(aux2->name),aux2->name);
-			aux2 = aux2->next;
-		}
-		
-	
-	i++;
+			printBranch(ind[i]);	
+			i++;
 	}
 }
-/*
-int main()
+
+/*int main()
 {
 char* nomes[21] ={"\0"};
  nomes[0] = strdup("Ana"); 
@@ -165,11 +113,11 @@ nomes[4] = strdup("Bna");
  nomes[12] = strdup("Cna"); 
  nomes[13] = strdup("Medro");
  nomes[14] = strdup("Nse");
- nomes[15] = strdup("Cone");
- nomes[16] = strdup("Qna"); 
- nomes[17] = strdup("Redro");
- nomes[18] = strdup("Sose");
- nomes[19] = strdup("Carla");
+ nomes[15] = strdup("Carla");
+ nomes[16] = strdup("Zeca"); 
+ nomes[17] = strdup("Cona");
+ nomes[18] = strdup("Dickson");
+ nomes[19] = strdup("ANALIDE");
 
 nomes[20] = strdup("Carla");
 
@@ -188,12 +136,12 @@ while(i<27)
 int k = 0;
 int j = 0 ;
 
-printf("ainda imprime\n");
+//printf("ainda imprime\n");
 for(k = 0; k<21;k++){
 top = addToInd(top,nomes[k]);
-printf("%d\n", k);
+//printf("%d\n", k);
 }
-printf("ainda imprime\n");
+//printf("ainda imprime\n");
 printIndice(top);
 	return 1;
 }

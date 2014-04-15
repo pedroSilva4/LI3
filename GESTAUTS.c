@@ -26,9 +26,12 @@ int main(int argc,char** argv)
 	int ano;
 	Indice* indice;
 	 int i = 0;
-	indice = malloc(28*sizeof(Node));
+	indice = initInd(indice); 
+
+	/*malloc(28*sizeof(Node));
 	for(i;i<28;i++)
 		indice[i] = NULL;
+		*/
 	Catalog * catalog;
 	catalog = catInit(catalog);
 
@@ -46,12 +49,12 @@ i=0 ;
  
 catalog = add(catalog,ano,nomes,nap); 
 
-/*while(nap>0)
+while(nap>0)
 {
  indice = addToInd(indice ,nomes[nap-1]);
 nap--;
 }
- */
+ 
 
     //printf("%s\n", nomes[0]);
     entradas++;
@@ -66,32 +69,7 @@ printf("Intervalo de anos: [%d-%d]\n", menor_ano,maior_ano);
 
 
 
-
-/*
-i=0;
-for(;i<56;i++)
-{
-	if(catalog[i])
-	{
-		printf(":::::::ANO %d::::::::\n", i+1960);
-		while(catalog[i]){
-		printf("%s\n",catalog[i]->author );
-		printf("%d\n",catalog[i]->np);
-		while(catalog[i]->relations)
-		{
-			printf("rel :: %s ++ ntimes:: %d\n",catalog[i]->relations->name,catalog[i]->relations->ntimes);
-			catalog[i]->relations = catalog[i]->relations->next;
-		}
-		catalog[i] = catalog[i]->next;
-		}
-	}
-}
-
-*/
-
-
-
-
+printCatalog(catalog);
 
 
 
