@@ -1,7 +1,7 @@
 #ifndef _CATALOG_
 #define _CATALOG_
 
-typedef struct rel	//estrura para relaçoes de autores
+typedef struct rel	/*estrura para relaçoes de autores*/
 {
 	char* name;
 	int ntimes;
@@ -12,8 +12,8 @@ typedef struct rel	//estrura para relaçoes de autores
 typedef struct entry
 {
 	char * author;
-	int np;	//numero publicações desse autor nesse ano
-	Relations relations;//autores com que publicou nesse ano
+	int np;	/*numero publicações desse autor nesse ano*/
+	Relations relations;/*autores com que publicou nesse ano*/
 	struct entry * right;
 	struct entry *left;
 	
@@ -21,6 +21,7 @@ typedef struct entry
 }*Catalog,cNode;
 
 Catalog * catInit(Catalog*);
+int catHash(int year);
 Catalog * add(Catalog*,int,char**,int);
 void printCatalog(Catalog *);
 

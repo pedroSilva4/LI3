@@ -40,7 +40,6 @@ void eatComaSpace(char* string)
 		j++;
 		
 	}
-//printf("ok eat meio\n");
 int k = 0;
 	while(string[j]!='\n')
 	{
@@ -48,14 +47,14 @@ int k = 0;
 		k++;
 		j++;
 	}
-	//printf("ok eat saida\n");
+	
 strcpy(string,aux);
 free(aux);
 
 }
 
 int getyear(char* string)
-{ //printf("stringlol : %s\n",string );
+{ 
 	int i =  atoi(string);
 free(string);
 	return i;
@@ -67,7 +66,7 @@ free(string);
 void lineParser(char string[],int* nn,int* year,int * nap,char *** nomes )
 {
  
-//printf("inside\n");
+
 char ** parsedNames = malloc(300 * sizeof(char*));
 
 int na = 0;
@@ -90,9 +89,9 @@ while(string[0]!='\n'|| string[0]!='\0')
 	}
 	else{
 			if(isdigit(string[0])){
-				//printf("entrada do getyear : %s\n",string);
+				
 				ano = getyear(string);
-			//printf("ano : %d\n",year);
+			
 				break;
 				}
 
@@ -110,7 +109,7 @@ while(string[0]!='\n'|| string[0]!='\0')
 *nap= na;
 *year = ano;
 *nomes = parsedNames;
-//free(*parsedNames);
+
 }
 
 

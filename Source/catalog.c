@@ -67,7 +67,8 @@ void addRelations(Relations* rel,char* nome,char** relations,int na)
 				{
 					
 					Relations rel_null = malloc(sizeof(rNode));
-					rel_null->name = strdup(relations[i]);
+					rel_null->name = malloc(strlen(relations[i])+1);
+					rel_null->name = strcpy(rel_null->name , relations[i]);
 					rel_null->ntimes = 1;
 					rel_null->next = new;
 					new = rel_null;
@@ -91,7 +92,8 @@ void addRelations(Relations* rel,char* nome,char** relations,int na)
 				{
 					if(!existsRel(relations[i],rel)){
 					Relations relaux = malloc(sizeof(rNode));
-					relaux->name = strdup(relations[i]);
+					relaux->name = malloc(strlen(relations[i])+1);
+					relaux->name = strcpy(relaux->name , relations[i]);
 					relaux->ntimes  = 1;
 					relaux->next = *rel;
 					*rel = relaux;
@@ -130,7 +132,8 @@ Catalog placeAuthor(Catalog branch,char* nome, char** nomes,int na)
 	if(!branch)
 	{
 	Catalog node = malloc(sizeof(cNode));
-	node->author = strdup(nome);
+	node->author = malloc(strlen(nome)+1);
+	node->author = strcpy(node->author,nome);
 	node->np = 1;
 	node->relations = NULL;
 	addRelations(&node->relations,nome,nomes,na);

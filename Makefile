@@ -4,21 +4,24 @@ clear:
 	clear
 
 clean:
-	rm -f *.o GESTAUTS
+	rm -f *.o out.txt GESTAUTS
 
 parser.o: Source/parser.c Headers/parser.h
-	gcc -c Source/parser.c
+	gcc -c -ansi Source/parser.c
 
 indAuthors.o: Source/indAuthors.c Headers/indAuthors.h
-	gcc -c Source/indAuthors.c
+	gcc -c -ansi Source/indAuthors.c
 
 catalog.o: Source/catalog.c Headers/catalog.h
-	gcc -c Source/catalog.c	
+	gcc -c -ansi Source/catalog.c	
 
-GESTAUTS: GESTAUTS.c parser.o indAuthors.o catalog.o
-	gcc -o GESTAUTS GESTAUTS.c catalog.o parser.o indAuthors.o
+catalogHandler.o: Source/catalogHandler.c Headers/catalogHandler.h catalog.o 
+	gcc -c -ansi Source/catalogHandler.c	
+
+GESTAUTS: GESTAUTS.c parser.o indAuthors.o catalog.o catalogHandler.o
+	gcc -o GESTAUTS -ansi  GESTAUTS.c catalog.o parser.o indAuthors.o catalogHandler.o
 
 exec: GESTAUTS
-	./GESTAUTS PUBLICX_FILES/publicx_x6.txt 
+	./GESTAUTS PUBLICX_FILES/publicx.txt 
 
 all: clear clean exec

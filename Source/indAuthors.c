@@ -38,20 +38,20 @@ void add_sort(Indice* branch, Indice node)
 	if(!*branch)
 	{
 		*branch = node;
-		//return branch;
+		
 	}
 	else 
 	{
 		if(strcmp(aux->name,node->name) < 0 )
 		{
-			//printf("%s é maior do que %s\n", node->name, branch->name);
+			
 				add_sort(&aux->right,node);
 		}
 		else
 		{
 			if(strcmp(aux->name,node->name) > 0 )
 			{
-			//	printf("%s é menor do que %s\n", node->name, branch->name);
+			
 				add_sort(&aux->left,node);
 			}
 		}
@@ -64,7 +64,8 @@ Indice* addToInd(Indice* ind , char* nome)
 	int it = hash(nome);
 
 	Indice node = malloc(sizeof(Node));
-				node-> name = strdup(nome);
+				node-> name =(char*) malloc(strlen(nome)+1);
+				node-> name = strcpy(node->name,nome);
 				node->right = NULL;
 				node->left = NULL;
 
