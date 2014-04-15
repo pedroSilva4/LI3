@@ -1,9 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "indAuthors.h"
-#include "parser.h"
-#include "catalog.h"
+#include "Headers/indAuthors.h"
+#include "Headers/parser.h"
+#include "Headers/catalog.h"
 
 
 int main(int argc,char** argv)

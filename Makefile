@@ -4,21 +4,21 @@ clear:
 	clear
 
 clean:
-	rm -f *.o executavel 
+	rm -f *.o GESTAUTS
 
-parser.o: parser.c parser.h
-	gcc -c parser.c
+parser.o: Source/parser.c Headers/parser.h
+	gcc -c Source/parser.c
 
-indAuthors.o: indAuthors.c indAuthors.h
-	gcc -c indAuthors.c
+indAuthors.o: Source/indAuthors.c Headers/indAuthors.h
+	gcc -c Source/indAuthors.c
 
-catalog.o: catalog.c catalog.h
-	gcc -c catalog.c	
+catalog.o: Source/catalog.c Headers/catalog.h
+	gcc -c Source/catalog.c	
 
-executavel: GESTAUTS.c parser.o indAuthors.o catalog.o
-	gcc -o executavel GESTAUTS.c catalog.o parser.o indAuthors.o
+GESTAUTS: GESTAUTS.c parser.o indAuthors.o catalog.o
+	gcc -o GESTAUTS GESTAUTS.c catalog.o parser.o indAuthors.o
 
-exec:	executavel
-	./executavel PUBLICX_FILES/publicx.txt 
+exec: GESTAUTS
+	./GESTAUTS PUBLICX_FILES/publicx.txt 
 
 all: clear clean exec
