@@ -24,6 +24,7 @@ int yearpublications(Catalog catalog, char* nome)
 			}
 
 }
+
 int solo(Catalog catalog)
 {
 	int res = 0;
@@ -126,3 +127,89 @@ void printCo_autores(Catalog* catalog,char* nome)
 	}
 	printf("\n====================\n");
 }
+
+Names getNames(Catalog branch,Names names)
+{
+
+	
+	if(branch)
+	{	
+			names = getNames(branch->left,names);
+			Names new  = NULL;
+			new = malloc(sizeof(rNode));
+			new->name = malloc(strlen(branch->author)+1);
+			new->name = strcpy(new->name, branch->author);
+			new->ntimes = 0;
+			new->next = names;
+			names  = new;
+			
+			names = getNames(branch->right,names);
+		
+		
+		
+	}
+	
+return names;
+}
+
+void pubEveryYear(Catalog* catalog, int year1, int year2)
+{
+	int ini = catHash(year1);
+	int fim = catHash(year2);
+
+	Names names = NULL;
+
+	names = getNames(catalog[ini],names);
+
+	int res= fim-ini + 1;
+
+	Names aux =  names;
+	while(aux)
+	{
+		int i = ini;
+		while(i<=fim)
+		{
+			
+			if(yearpublications(catalog[i],aux->name))
+				aux->ntimes++;
+			i++;
+		}
+
+		if(aux->ntimes==res)
+			printf("%s, ",aux->name );
+
+		aux= aux->next;
+	}
+
+	printf("\n");	
+}
+
+void n_authors(Catalog* catalog,Names names,int n)
+{
+	Names aux = names;
+
+	
+
+	while(aux)
+	{
+		int i=0 ;
+		while(i<56){
+			if(catalog[i])
+			{
+				aux->ntimes += yearpublications(catalog[i],aux->name);
+				
+			}
+				i++;
+			}
+		
+
+	aux = aux->next;
+	}
+	
+}
+/*
+int main()
+{
+	return 1;
+}
+*/

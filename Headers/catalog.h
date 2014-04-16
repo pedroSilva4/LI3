@@ -6,7 +6,7 @@ typedef struct rel	/*estrura para relaçoes de autores*/
 	char* name;
 	int ntimes;
 	struct rel *next;
-}*Relations,rNode;
+}*Relations,rNode,*Names;
 
 
 typedef struct entry

@@ -5,7 +5,7 @@
 #include "Headers/parser.h"
 #include "Headers/catalog.h"
 #include "Headers/catalogHandler.h"
-
+#include "Headers/indiceHandler.h"
 
 void printMenu()
 {
@@ -138,7 +138,7 @@ while(flag)
 				{
 					if(narg!= 3 || !isInt(args[1]))
 					{
-						printf("wrong argumenst\n Comand :: >> 2 \"year\" \"author\"\n");
+						printf("wrong argumenst\n Comand :: >> 2;\"year\";\"author\"\n");
 						break;
 					}
 					else
@@ -171,7 +171,7 @@ while(flag)
 				{
 						if(narg!=2)
 						{
-							printf("wrong argumenst\n Comand :: >> 4 \"Autor\"\n");
+							printf("wrong argumenst\n Comand :: >> 4;\"Autor\"\n");
 							break;
 						}
 						else
@@ -198,7 +198,7 @@ while(flag)
 					/*det co-auotres*/
 					if(narg != 2)
 					{
-						printf("wrong argumenst\n Comand :: >> 7 \"Autor\"\n");
+						printf("wrong argumenst\n Comand :: >> 7;\"Autor\"\n");
 							break;
 					}
 					else
@@ -206,6 +206,64 @@ while(flag)
 						printCo_autores(catalog,args[1]);
 						break;
 					}
+				}
+				
+				case 8:
+				{ 
+					if(narg!=3 || !isInt(args[1]) || !isInt(args[2]))
+					{
+						printf("wrong argumenst\n Comand :: >> 8;\"year1\";\"year2\" \n");
+						break;
+					}
+					else
+					{
+						pubEveryYear(catalog,atoi(args[1]),atoi(args[2]));
+						/*printf("correu bem\n");*/
+						break;
+					}
+				}
+				
+				case 9:
+				{
+					/*tabela para um ano tipo csv*/
+					break;
+				}
+
+				case 10:
+				{
+					/*CSV*/
+					break;
+				}
+
+				case 11:
+				{
+					if(narg!=2 || !isInt(args[1]))
+					{
+						printf("wrong argumenst\n Comand :: >> 11;\"N authors\"\n");
+						break;
+					}
+					else
+					{
+						Names names  =NULL;
+						names = getIndNames(indice,names);
+						i=0;
+						
+						n_authors(catalog,names,10);
+						/*lista dos N autores com maior numero de publicaçoes*/
+						break;
+					}
+				}
+
+				case 12:
+				{
+					/*percentagem de pubs num ano*/
+					break;
+				}
+
+				case 13:
+				{
+					/* media dos tamnahos dos nomes dos autores*/
+					break;
 				}
 
 				default: 

@@ -27,6 +27,8 @@ int catHash(int year)
 
 	if(res>55)
 		return 55;
+	if(res<0)
+		return 55;/*posicao 55 (ultima do array) fica com as pubs que sejam anteriores a 1960 e posteriores a 2014*/
 
 	return res;
 }

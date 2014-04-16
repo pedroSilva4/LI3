@@ -18,8 +18,11 @@ catalog.o: Source/catalog.c Headers/catalog.h
 catalogHandler.o: Source/catalogHandler.c Headers/catalogHandler.h catalog.o 
 	gcc -c -ansi Source/catalogHandler.c	
 
-GESTAUTS: GESTAUTS.c parser.o indAuthors.o catalog.o catalogHandler.o
-	gcc -o GESTAUTS -ansi  GESTAUTS.c catalog.o parser.o indAuthors.o catalogHandler.o
+indiceHandler.o: Source/indiceHandler.c Headers/indiceHandler.h catalog.o indAuthors.o
+	gcc -c -ansi Source/indiceHandler.c
+
+GESTAUTS: GESTAUTS.c parser.o indAuthors.o catalog.o catalogHandler.o indiceHandler.o
+	gcc -o GESTAUTS -ansi  GESTAUTS.c catalog.o parser.o indAuthors.o catalogHandler.o indiceHandler.o
 
 exec: GESTAUTS
 	./GESTAUTS PUBLICX_FILES/publicx.txt 
