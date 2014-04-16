@@ -67,7 +67,6 @@ Stats* addPub (Stats* stat, int year, int nAut)			/* Adiciona stats de uma publi
 {
 	int hYear = statHash(year);
 	Stats temp = malloc(sizeof(sNode));
-/*	temp->year = year;		*/
 	temp->numAut = nAut;
 	temp->numPub = 1;
 	temp->left = NULL;
@@ -102,53 +101,4 @@ void printBranchStats(Stats stat)
 	}
 }
 
-void printStats(Stats* stat)					/* Imprime stats de um ano específico */
-{
-	printf(".:Estatisticas de publicações:.\n");
-	int j;
-	for(j=0;j<56;j++)
-	{
-		printf("Ano: %d\n", yearFromHash(j));
-		printBranchStats(stat[j]);
-	}
-}	
 
-void table_printAll(Stats* stat)					/* Imprime tabela de todos os anos e publicações por ano, 1 no menu */
-{
-	int j;
-	printf("======================\n");
-	printf("|Ano\t|Publicações\n");
-	printf("======================\n");
-	for(j=0; j<56; j++)
-	{
-		printf("|%d\t|%d\n", yearFromHash(j), totalPubsYear(stat, yearFromHash(j)));
-		printf("======================\n");
-	}
-}
-
-int PubsInterval(Stats* stat, int small, int big)
-{
-	int total = 0;
-	while(small<=big)
-	{
-		total+=totalPubsYear(stat, small);
-		small++;
-	}
-	return total;
-}	
-/*
-int main()
-{
-	Stats* rar = init(rar);
-	printf("Inited\n");
-	rar = addPub(rar, 1993, 2);
-	rar = addPub(rar, 1993, 2);
-	rar = addPub(rar, 1993, 2);
-	rar = addPub(rar, 1993, 5);
-	rar = addPub(rar, 2002, 5);
-	rar = addPub(rar, 1993, 1);
-	printStats(rar);
-	printf("Em 1993:\n%d\n", totalPubsYear(rar, 1993));
-	table_printAll(rar);
-	printf("1993+2002: %d\n", PubsInterval(rar, 1993, 2002));
-}*/
