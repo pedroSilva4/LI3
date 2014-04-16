@@ -6,6 +6,9 @@
 #include "Headers/catalog.h"
 #include "Headers/catalogHandler.h"
 #include "Headers/indiceHandler.h"
+#include "Headers/stats.h"
+#include "Headers/statsHandler.h"
+
 
 void printMenu()
 {
@@ -71,6 +74,8 @@ int main(int argc,char** argv)
 	indice = initInd(indice); 
 	Catalog * catalog;
 	catalog = catInit(catalog);
+	Stats* stats;
+	stats = initStat(stats);
 
 	while ((read = getline(&line, &len, fl)) != -1) 
 	{
@@ -85,6 +90,7 @@ int main(int argc,char** argv)
     		menor_ano = ano;
  
 		catalog = add(catalog,ano,nomes,nap); 
+		stats = addPub(stats, ano, nap);
 
 		while(nap>0)
 		{
@@ -133,8 +139,16 @@ int main(int argc,char** argv)
 				{
 					case 1 :
 					{
-						printf("Imprimir da tabela de stats\n");	
-						break;
+						if(narg != 1)
+						{
+							printf("wrong arguments\n Command :: >> 1");
+							break;
+						}
+						else
+						{
+							table_printAll(stats);
+							break;
+						}
 					}
 					case 2 :
 					{
@@ -195,8 +209,16 @@ int main(int argc,char** argv)
 
 					case 6:
 					{
-						/*total de pubs entre do intervalo de anos*/
-						break;
+						if(narg!=3 || !isInt(args[1]) || !isInt(args[2]))
+						{
+							printf("Wrong arguments\n Command :: >> 6;\"Year1\" \"Year2\"\n");
+							break;
+						}
+						else
+						{
+							printf("Numero de publicações entre [%d,%d]:\n%d\n",atoi(args[1]), atoi(args[2]), pubsInterval(stats, atoi(args[1]), atoi(args[2])));
+							break;
+						}
 					}
 
 					case 7:
@@ -233,21 +255,40 @@ int main(int argc,char** argv)
 				
 					case 9:
 					{
-						/*tabela para um ano tipo csv*/
+						if(narg!=3 || !isInt(args[1]))
+						{
+							printf("Wrong arguments\n Command :: >> 9;\"year\";\"filename\"\n");
 						break;
+						}
+						else
+						{
+							table_printToThree(stats, atoi(args[1]), args[2]);
+							break;
+						}
 					}
 
 					case 10:
 					{
-						/*CSV*/
-						break;
+						if(narg!=1)
+						{
+							printf("Wrong arguments\n Command :: >> 10");
+							break;
+						}
+						else
+						{
+							tableCSV(stats);
+							break;
+						}
+					
+					
+					
 					}
 
 					case 11:
 					{
 						if(narg!=2 || !isInt(args[1]))
 						{
-							printf("wrong argumenst\n Comand :: >> 11;\"N authors\"\n");
+							printf("Wrong arguments\n Command :: >> 11;\"N authors\"\n");
 							break;
 						}
 						else
@@ -263,8 +304,20 @@ int main(int argc,char** argv)
 
 					case 12:
 					{
-						/*percentagem de pubs num ano*/
-						break;
+						if(narg!=3 || !isInt(args[1]))
+						{
+							printf("Wrong arguments\n Command :: >> 12;\"Year\";\"Author\"\n");
+							break;
+						}
+						else
+						{
+							int ind = catHash(atoi(args[1]));
+							int totalpubs = totalPubsYear(stats, atoi(args[1]));
+							int authorpubs = yearpublications(catalog[ind], args[2]);
+							float res = ((float)authorpubs / (float)totalpubs)*100;
+							printf("Percentagem de publicações do autor %s no ano %d:\n%f\n", args[2], atoi(args[1]), res);
+							break;
+						}
 					}
 
 					case 13:

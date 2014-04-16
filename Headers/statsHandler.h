@@ -4,7 +4,7 @@
 #include "stats.h"
 
 void table_printAll(Stats*);
-int PubsInterval(Stats*,int,int);
+int pubsInterval(Stats*,int,int);
 void table_printToThree(Stats*, int, char*);
 void tableCSV(Stats*);
 

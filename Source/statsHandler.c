@@ -12,12 +12,15 @@ void table_printAll(Stats* stat)					/* Imprime tabela de todos os anos e public
 	printf("======================\n");
 	for(j=0; j<56; j++)
 	{
+		if(stat[j])
+		{
 		printf("|%d\t|%d\n", yearFromHash(j), totalPubsYear(stat, yearFromHash(j)));
 		printf("======================\n");
+		}
 	}
 }
 
-int PubsInterval(Stats* stat, int small, int big)			/*Retorna intervalo entre dois anos*/
+int pubsInterval(Stats* stat, int small, int big)			/*Retorna intervalo entre dois anos*/
 {
 	int total = 0;
 	while(small<=big)
