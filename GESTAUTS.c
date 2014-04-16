@@ -138,7 +138,7 @@ while(flag)
 				{
 					if(narg!= 3 || !isInt(args[1]))
 					{
-						printf("wrong argumenst\n Comand :: >> 2 \"year\" \"author\"\n");
+						printf("Wrong arguments\n Command :: >> 2 \"year\" \"author\"\n");
 						break;
 					}
 					else
@@ -157,7 +157,7 @@ while(flag)
 				{
 						if(narg != 1)
 						{
-							printf("wrong argumenst\n Comand :: >> 3\n");
+							printf("Wrong arguments\n Command :: >> 3\n");
 							break;
 						}
 						else
@@ -171,7 +171,7 @@ while(flag)
 				{
 						if(narg!=2)
 						{
-							printf("wrong argumenst\n Comand :: >> 4 \"Autor\"\n");
+							printf("Wrong arguments\n Command :: >> 4 \"Autor\"\n");
 							break;
 						}
 						else
@@ -198,7 +198,7 @@ while(flag)
 					/*det co-auotres*/
 					if(narg != 2)
 					{
-						printf("wrong argumenst\n Comand :: >> 7 \"Autor\"\n");
+						printf("Wrong arguments\n Command :: >> 7 \"Autor\"\n");
 							break;
 					}
 					else
@@ -209,7 +209,7 @@ while(flag)
 				}
 
 				default: 
-				{		printf("Comand number %d does not exist\nChoose a number from Menu\n",op);
+				{		printf("Command number %d does not exist\nChoose a number from Menu\n",op);
 						break;
 				}
 		}
@@ -222,7 +222,7 @@ while(flag)
 			
 			else
 			{
-				printf("Comand %s does not exist\nChoose a number from Menu\n",args[0]);
+				printf("Command %s does not exist\nChoose a number from Menu\n",args[0]);
 			}
 	}
 }
