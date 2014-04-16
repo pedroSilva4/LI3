@@ -184,28 +184,75 @@ void pubEveryYear(Catalog* catalog, int year1, int year2)
 	printf("\n");	
 }
 
+
+Names* top_n(Names* names, Names name, int n)
+{
+	Names aux = name;
+	
+	int np = aux->ntimes;
+	int i = 0;
+	int insInto = -1;
+	int inserted = 0;
+	while(i<n)
+	{
+		if(!names[i])
+		{
+			names[i] = malloc(sizeof(rNode));
+			names[i] = aux;
+			inserted = 1;
+			break;
+		}
+		else
+		{
+			if(names[i]->ntimes< np){
+				np = names[i]->ntimes;
+				insInto = i;
+			}
+		}
+		i++;
+	}
+
+	if(inserted==1)
+		return names;
+	
+	if(insInto!=-1)
+		names[insInto] = aux;
+	
+	return names;
+
+}
+
 void n_authors(Catalog* catalog,Names names,int n)
 {
 	Names aux = names;
 
-	
+	Names* res = malloc(n*sizeof(rNode));
+
 
 	while(aux)
 	{
 		int i=0 ;
-		while(i<56){
+		while(i<56)
+		{
 			if(catalog[i])
 			{
 				aux->ntimes += yearpublications(catalog[i],aux->name);
 				
 			}
-				i++;
-			}
+		  i++;
+		}
 		
+	res = top_n(res,aux,n);
 
 	aux = aux->next;
 	}
 	
+	int i= 0;
+	while(i<n)
+	{
+		printf("%s --> %d\n",res[i]->name,res[i]->ntimes);
+		i++;
+	}
 }
 /*
 int main()

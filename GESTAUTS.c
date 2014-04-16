@@ -50,12 +50,13 @@ int isInt(char* str)
 
 int main(int argc,char** argv)
 {
-	if(argc!= 2){
+	if(argc!= 2)
+	{
 		printf("Wrong arguments!\nSintax: GESTAUTS 'file_path'\n");
-	return 1;
-   }
-   /*time_t seconds = time(NULL);*/
- int entradas = 0;
+		return 1;
+    }
+    /*time_t seconds = time(NULL);*/
+    int entradas = 0;
 	int menor_ano = 2015;
 	int maior_ano = 0;
 	int autores = 0;
@@ -66,99 +67,96 @@ int main(int argc,char** argv)
 	size_t len = 0;
 	int ano;
 	Indice* indice;
-	 int i = 0;
+	int i = 0;
 	indice = initInd(indice); 
 	Catalog * catalog;
 	catalog = catInit(catalog);
 
-	while ((read = getline(&line, &len, fl)) != -1) {
-	int nap= 0;
-	char** nomes;
-	lineParser(line,&autores, &ano,&nap,&nomes); 
+	while ((read = getline(&line, &len, fl)) != -1) 
+	{
+		int nap= 0;
+		char** nomes;
+		lineParser(line,&autores, &ano,&nap,&nomes); 
 
-    if(ano > maior_ano)
-    	maior_ano = ano;
+    	if(ano > maior_ano)
+    		maior_ano = ano;
 
-    if(ano < menor_ano)
-    	menor_ano = ano;
+    	if(ano < menor_ano)
+    		menor_ano = ano;
  
-	catalog = add(catalog,ano,nomes,nap); 
+		catalog = add(catalog,ano,nomes,nap); 
 
-	while(nap>0)
-	{
- 		indice = addToInd(indice ,nomes[nap-1]);
-		nap--;
-	}
-	entradas++;
-    free(nomes);
-    len= 0;
-}
-printf("Ficheiro: %s\n", filename);
-printf("Publicaçoes: %d\n",entradas );
-printf("Numero total de autores: %d\n",autores );
-printf("Intervalo de anos: [%d-%d]\n", menor_ano,maior_ano);
-printf("=========================\n=========================\n");
-/*time_t seconds2 = time(NULL);
-/*printf("inicialização durou :: %ld segundos\n", (seconds2-seconds) );*/
-
-
-printMenu();
-int flag=1;
-while(flag)
-{
-	i=0;
-	char buff[100];
-	char* delims = ";\n";
-	printf(">>");
-	fgets(buff, sizeof(buff), stdin);
-	
-	if(buff[0]!='\n' && buff[0]!=' ')
-	{
-		char* args[10];
-		args[0] = strtok( buff, delims );
-		
-		while( args[i] != NULL && strcmp(args[i],"\n") ) 
+		while(nap>0)
 		{
-    		i++;
-    		args[i] = strtok( NULL, delims );
+ 			indice = addToInd(indice ,nomes[nap-1]);
+			nap--;
 		}
+		entradas++;
+    	free(nomes);
+    	len= 0;
+	}
+	printf("Ficheiro: %s\n", filename);
+	printf("Publicaçoes: %d\n",entradas );
+	printf("Numero total de autores: %d\n",autores );
+	printf("Intervalo de anos: [%d-%d]\n", menor_ano,maior_ano);
+	printf("=========================\n=========================\n");
+	/*time_t seconds2 = time(NULL);
+	/*printf("inicialização durou :: %ld segundos\n", (seconds2-seconds) );*/
 
-		if(isInt(args[0]))
+
+	printMenu();
+	int flag=1;
+	while(flag)
+	{
+		i=0;
+		char buff[100];
+		char* delims = ";\n";
+		printf(">>");
+		fgets(buff, sizeof(buff), stdin);
+	
+		if(buff[0]!='\n' && buff[0]!=' ')
 		{
-			int op = atoi(args[0]);
-			int narg = i;/* number of arguments comand included*/
-			switch (op)
+			char* args[10];
+			args[0] = strtok( buff, delims );
+		
+			while( args[i] != NULL && strcmp(args[i],"\n") ) 
 			{
-				case 1 :
+    			i++;
+    			args[i] = strtok( NULL, delims );
+			}
+
+			if(isInt(args[0]))
+			{
+				int op = atoi(args[0]);
+				int narg = i;/* number of arguments comand included*/
+				switch (op)
 				{
-					printf("Imprimir da tabela de stats\n");	
-					break;
-				}
-				case 2 :
-				{
-					if(narg!= 3 || !isInt(args[1]))
+					case 1 :
 					{
-<<<<<<< HEAD
-						printf("wrong argumenst\n Comand :: >> 2;\"year\";\"author\"\n");
-=======
-						printf("Wrong arguments\n Command :: >> 2 \"year\" \"author\"\n");
->>>>>>> a182e060a30460d9762bf05915ef336c829f91a7
+						printf("Imprimir da tabela de stats\n");	
 						break;
 					}
-					else
-					{	/*verificar se o autor existe*/
+					case 2 :
+					{
+						if(narg!= 3 || !isInt(args[1]))
+						{
 
-
-						/*se existe fazer*/
-						int year = catHash(atoi(args[1]));
-						int np = yearpublications(catalog[year],args[2]);
-						printf("O Autor %s publicou %d vezes no ano %d\n", args[2],np,atoi(args[1]));
+							printf("wrong arguments\n Command :: >> 2;\"year\";\"author\"\n");
 							break;
+						}
+						else
+						{	/*verificar se o autor existe*/
+
+							/*se existe fazer*/
+							int year = catHash(atoi(args[1]));
+							int np = yearpublications(catalog[year],args[2]);
+							printf("O Autor %s publicou %d vezes no ano %d\n", args[2],np,atoi(args[1]));
+							break;
+						}
 					}
-				}
 				
-				case 3 :
-				{
+					case 3 :
+					{
 						if(narg != 1)
 						{
 							printf("Wrong arguments\n Command :: >> 3\n");
@@ -169,17 +167,16 @@ while(flag)
 							soloPublishers(catalog);
 							break;
 						}
-				}
+					}
 				
-				case 4:
-				{
+					case 4:
+					{
 						if(narg!=2)
 						{
-<<<<<<< HEAD
-							printf("wrong argumenst\n Comand :: >> 4;\"Autor\"\n");
-=======
-							printf("Wrong arguments\n Command :: >> 4 \"Autor\"\n");
->>>>>>> a182e060a30460d9762bf05915ef336c829f91a7
+
+							printf("wrong arguments\n Command :: >> 4;\"Autor\"\n");
+
+							
 							break;
 						}
 						else
@@ -188,118 +185,114 @@ while(flag)
 							table_pubsByYear(catalog,args[1],menor_ano,maior_ano);
 							break;
 						}
-				}
+					}
 		
-				case 5:
-				{
+					case 5:
+					{
 						/*indice dada uma letra*/
 						break;
-				}
+					}
 
-				case 6:
-				{
-					/*total de pubs entre dintervalo de anos*/
-					break;
-				}
-				case 7:
-				{
-					/*det co-auotres*/
-					if(narg != 2)
+					case 6:
 					{
-<<<<<<< HEAD
-						printf("wrong argumenst\n Comand :: >> 7;\"Autor\"\n");
-=======
-						printf("Wrong arguments\n Command :: >> 7 \"Autor\"\n");
->>>>>>> a182e060a30460d9762bf05915ef336c829f91a7
+						/*total de pubs entre do intervalo de anos*/
+						break;
+					}
+
+					case 7:
+					{
+						/*det co-auotres*/
+						if(narg != 2)
+						{
+
+							printf("wrong arguments\n Command :: >> 7;\"Autor\"\n");
+
 							break;
+						}
+						else
+						{
+							printCo_autores(catalog,args[1]);
+							break;
+						}
 					}
-					else
-					{
-						printCo_autores(catalog,args[1]);
-						break;
-					}
-				}
 				
-				case 8:
-				{ 
-					if(narg!=3 || !isInt(args[1]) || !isInt(args[2]))
-					{
-						printf("wrong argumenst\n Comand :: >> 8;\"year1\";\"year2\" \n");
-						break;
+					case 8:
+					{ 
+						if(narg!=3 || !isInt(args[1]) || !isInt(args[2]))
+						{
+							printf("wrong arguments\n Command :: >> 8;\"year1\";\"year2\" \n");
+							break;
+						}
+						else
+						{
+							pubEveryYear(catalog,atoi(args[1]),atoi(args[2]));
+							/*printf("correu bem\n");*/
+							break;
+						}
 					}
-					else
-					{
-						pubEveryYear(catalog,atoi(args[1]),atoi(args[2]));
-						/*printf("correu bem\n");*/
-						break;
-					}
-				}
 				
-				case 9:
-				{
-					/*tabela para um ano tipo csv*/
-					break;
-				}
-
-				case 10:
-				{
-					/*CSV*/
-					break;
-				}
-
-				case 11:
-				{
-					if(narg!=2 || !isInt(args[1]))
+					case 9:
 					{
-						printf("wrong argumenst\n Comand :: >> 11;\"N authors\"\n");
+						/*tabela para um ano tipo csv*/
 						break;
 					}
-					else
+
+					case 10:
 					{
-						Names names  =NULL;
-						names = getIndNames(indice,names);
-						i=0;
-						
-						n_authors(catalog,names,10);
-						/*lista dos N autores com maior numero de publicaçoes*/
+						/*CSV*/
+						break;
+					}
+
+					case 11:
+					{
+						if(narg!=2 || !isInt(args[1]))
+						{
+							printf("wrong argumenst\n Comand :: >> 11;\"N authors\"\n");
+							break;
+						}
+						else
+						{
+							Names names  =NULL;
+							names = getIndNames(indice,names);
+						 	int n = atoi(args[1]);
+							n_authors(catalog,names,n);
+							/*lista dos N autores com maior numero de publicaçoes*/
+							break;
+						}
+					}
+
+					case 12:
+					{
+						/*percentagem de pubs num ano*/
+						break;
+					}
+
+					case 13:
+					{
+						/* media dos tamnahos dos nomes dos autores*/
+						break;
+					}
+
+					default: 
+					{		
+						printf("Command number %d does not exist\nChoose a number from Menu\n",op);
 						break;
 					}
 				}
+			}
+			else 
+			{
+				if(!strcmp(args[0],"quit")) return 0;
 
-				case 12:
+				if(!strcmp(args[0],"help")) printMenu();
+			
+				else
 				{
-					/*percentagem de pubs num ano*/
-					break;
+					printf("Command %s does not exist\nChoose a number from Menu\n",args[0]);
 				}
-
-				case 13:
-				{
-					/* media dos tamnahos dos nomes dos autores*/
-					break;
-				}
-
-				default: 
-				{		printf("Command number %d does not exist\nChoose a number from Menu\n",op);
-						break;
-				}
+			}
 		}
 	}
-	else 
-		{
-			if(!strcmp(args[0],"quit")) return 0;
-
-			if(!strcmp(args[0],"help")) printMenu();
-			
-			else
-			{
-				printf("Command %s does not exist\nChoose a number from Menu\n",args[0]);
-			}
-	}
-}
-
-
-
-}
 
 free(line);
 fclose(fl);
