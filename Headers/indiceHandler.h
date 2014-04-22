@@ -5,4 +5,7 @@
 #include "catalog.h"
 
 Names getIndNames(Indice* indice,Names names);
+void averagelength(Indice* indice);
+void printNamesLetter(Indice indice);
+int existsAuthor(Indice ind, char* name);
 #endif

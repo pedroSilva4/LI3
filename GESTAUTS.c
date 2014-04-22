@@ -160,12 +160,19 @@ int main(int argc,char** argv)
 						}
 						else
 						{	/*verificar se o autor existe*/
-
+							if(existsAuthor(indice[hash(args[2])], args[2]))
+							{
 							/*se existe fazer*/
-							int year = catHash(atoi(args[1]));
-							int np = yearpublications(catalog[year],args[2]);
-							printf("O Autor %s publicou %d vezes no ano %d\n", args[2],np,atoi(args[1]));
-							break;
+								int year = catHash(atoi(args[1]));
+								int np = yearpublications(catalog[year],args[2]);
+								printf("O Autor %s publicou %d vezes no ano %d\n", args[2],np,atoi(args[1]));
+								break;
+							}
+							else
+							{
+								printf("Author %s does not exist\n", args[2]);
+								break;
+							}
 						}
 					}
 				
@@ -196,17 +203,34 @@ int main(int argc,char** argv)
 						else
 						{
 							/*ver se autor existe*/
-							table_pubsByYear(catalog,args[1],menor_ano,maior_ano);
-							break;
+							if(existsAuthor(indice[hash(args[1])], args[1]))
+							{
+								table_pubsByYear(catalog,args[1],menor_ano,maior_ano);
+								break;
+							}
+							else
+							{
+								printf("Author %s does not exist\n",args[1]);
+								break;
+							}
 						}
 					}
 		
 					case 5:
-					{
-						/*indice dada uma letra*/
-						break;
-					}
+					{	
 
+						if(narg!=2)
+						{
+							printf("wrong arguments\n Command :: >> 5;\"Letter\"\n");
+							break;
+						}
+						else
+						{					
+							printNamesLetter(indice[hash(args[1])]);
+							printf("\n");
+							break;
+						}	
+					}
 					case 6:
 					{
 						if(narg!=3 || !isInt(args[1]) || !isInt(args[2]))
@@ -233,8 +257,16 @@ int main(int argc,char** argv)
 						}
 						else
 						{
-							printCo_autores(catalog,args[1]);
-							break;
+							if(existsAuthor(indice[hash(args[1])], args[1]))
+							{
+								printCo_autores(catalog,args[1]);
+								break;
+							}
+							else
+							{
+								printf("Author %s does not exist\n",args[1]);
+								break;
+							}
 						}
 					}
 				
@@ -271,7 +303,7 @@ int main(int argc,char** argv)
 					{
 						if(narg!=1)
 						{
-							printf("Wrong arguments\n Command :: >> 10");
+							printf("Wrong arguments\n Command :: >> 10\n");
 							break;
 						}
 						else
@@ -311,19 +343,36 @@ int main(int argc,char** argv)
 						}
 						else
 						{
-							int ind = catHash(atoi(args[1]));
-							int totalpubs = totalPubsYear(stats, atoi(args[1]));
-							int authorpubs = yearpublications(catalog[ind], args[2]);
-							float res = ((float)authorpubs / (float)totalpubs)*100;
-							printf("Percentagem de publicações do autor %s no ano %d:\n%f\n", args[2], atoi(args[1]), res);
-							break;
+							if(existsAuthor(indice[hash(args[2])], args[2]))
+							{
+								int ind = catHash(atoi(args[1]));
+								int totalpubs = totalPubsYear(stats, atoi(args[1]));
+								int authorpubs = yearpublications(catalog[ind], args[2]);
+								float res = ((float)authorpubs / (float)totalpubs)*100;
+								printf("Percentagem de publicações do autor %s no ano %d:\n%f\n", args[2], atoi(args[1]), res);
+								break;
+							}
+							else
+							{
+								printf("Author %s does not exist\n",args[2]);
+								break;
+							}
 						}
 					}
 
 					case 13:
 					{
-						/* media dos tamnahos dos nomes dos autores*/
-						break;
+						if(narg!=1)
+						{
+							printf("Wrong arguments\n Command :: >> 13\n");
+							break;
+						}
+						else
+						{
+							averagelength(indice);
+							break;
+						}
+						
 					}
 
 					default: 
@@ -347,7 +396,8 @@ int main(int argc,char** argv)
 		}
 	}
 
-free(line);
+
+
 fclose(fl);
 free(indice);
 free(catalog);

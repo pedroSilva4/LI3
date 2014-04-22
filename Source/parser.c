@@ -7,15 +7,20 @@ char* getName(char* string)
 {
 	
 int i =0;
-char* aux = malloc(450);
+char* aux;
 char* aux2 = malloc(1000);
 int j = 0;
 for(i;(string[i]!= ',');i++)
 {
-	aux[i] = string[i];
-	j = i+1;	
+	/*aux[i] = string[i];*/
+	
+	j = i+1;
+	if(string[i+1]==',')
+	break;	
 }
 
+aux = malloc(j+1);
+aux = strncpy(aux,string,j);
 int k = 0;
 while(string[j] !='\n')
 {
@@ -25,7 +30,7 @@ while(string[j] !='\n')
 }
 
 strcpy(string,aux2);
-free(aux2);
+/*free(aux2);*/
 return aux;
 
 }
@@ -49,14 +54,14 @@ int k = 0;
 	}
 	
 strcpy(string,aux);
-free(aux);
+/*free(aux);*/
 
 }
 
 int getyear(char* string)
 { 
 	int i =  atoi(string);
-free(string);
+	free(string);
 	return i;
 }
 
@@ -79,7 +84,7 @@ while(string[0]!='\n'|| string[0]!='\0')
 {
 	if(string[0]!= ',' && string[0]!= ' ' && !isdigit(string[0])){
 		
-		parsedNames[i] =  malloc(450);
+		parsedNames[i] =  malloc(50);
 		parsedNames[i] = getName(string);
 		na++;
 		i++;

@@ -31,6 +31,6 @@ GESTAUTS: GESTAUTS.c parser.o indAuthors.o catalog.o catalogHandler.o indiceHand
 	gcc -o GESTAUTS -ansi  GESTAUTS.c catalog.o parser.o indAuthors.o catalogHandler.o indiceHandler.o stats.o statsHandler.o
 
 exec: GESTAUTS
-	./GESTAUTS PUBLICX_FILES/publicx.txt 
+	./GESTAUTS PUBLICX_FILES/publicx.txt
 
 all: clear clean exec

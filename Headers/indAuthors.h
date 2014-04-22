@@ -14,6 +14,7 @@ typedef struct indNode
 Indice* initInd(Indice*);
 Indice* addToInd(Indice*,char*);
 void printIndice(Indice*);
+int hash(char* name);
 
 
 #endif
