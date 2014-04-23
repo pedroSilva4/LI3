@@ -8,6 +8,7 @@
 #include "Headers/indiceHandler.h"
 #include "Headers/stats.h"
 #include "Headers/statsHandler.h"
+#include <time.h>
 
 
 void printMenu()
@@ -76,6 +77,7 @@ int main(int argc,char** argv)
 	catalog = catInit(catalog);
 	Stats* stats;
 	stats = initStat(stats);
+	time_t begin = time(NULL);
 
 	while ((read = getline(&line, &len, fl)) != -1) 
 	{
@@ -106,8 +108,8 @@ int main(int argc,char** argv)
 	printf("Numero total de autores: %d\n",autores );
 	printf("Intervalo de anos: [%d-%d]\n", menor_ano,maior_ano);
 	printf("=========================\n=========================\n");
-	/*time_t seconds2 = time(NULL);
-	/*printf("inicialização durou :: %ld segundos\n", (seconds2-seconds) );*/
+	time_t seconds2 = time(NULL);
+	printf("inicialização durou :: %ld segundos\n",(seconds2-begin) );
 
 
 	printMenu();
@@ -259,7 +261,10 @@ int main(int argc,char** argv)
 						{
 							if(existsAuthor(indice[hash(args[1])], args[1]))
 							{
+								time_t b7 = time(NULL); 
 								printCo_autores(catalog,args[1]);
+								time_t e7 = time(NULL);
+								printf("tempo gasto %ld segundos \n", e7-b7 );
 								break;
 							}
 							else
@@ -279,7 +284,10 @@ int main(int argc,char** argv)
 						}
 						else
 						{
+							time_t b8 = time(NULL);
 							pubEveryYear(catalog,atoi(args[1]),atoi(args[2]));
+							time_t e8 = time(NULL);
+								printf("tempo gasto %ld segundos \n", e8-b8 );
 							/*printf("correu bem\n");*/
 							break;
 						}
@@ -325,10 +333,13 @@ int main(int argc,char** argv)
 						}
 						else
 						{
+							clock_t b11 = time(NULL); 
 							Names names  =NULL;
 							names = getIndNames(indice,names);
 						 	int n = atoi(args[1]);
 							n_authors(catalog,names,n);
+							clock_t e11 = time(NULL);
+								 printf("Tempo gasto %ld segundos \n", (e11-b11) );
 							/*lista dos N autores com maior numero de publicaçoes*/
 							break;
 						}
@@ -345,11 +356,14 @@ int main(int argc,char** argv)
 						{
 							if(existsAuthor(indice[hash(args[2])], args[2]))
 							{
+								
 								int ind = catHash(atoi(args[1]));
 								int totalpubs = totalPubsYear(stats, atoi(args[1]));
 								int authorpubs = yearpublications(catalog[ind], args[2]);
 								float res = ((float)authorpubs / (float)totalpubs)*100;
 								printf("Percentagem de publicações do autor %s no ano %d:\n%f\n", args[2], atoi(args[1]), res);
+								
+								
 								break;
 							}
 							else

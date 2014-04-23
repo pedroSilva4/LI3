@@ -30,7 +30,7 @@ while(string[j] !='\n')
 }
 
 strcpy(string,aux2);
-/*free(aux2);*/
+free(aux2);
 return aux;
 
 }

@@ -86,46 +86,142 @@ void table_pubsByYear(Catalog* catalog,char* nome,int menor_ano,int maior_ano)
 }
 
 
-void co_autoYear(Catalog catalog,char* nome)
+
+typedef struct snames
 {
-		if(!catalog) return ;
+	char* name;
+	int ntimes;
+	struct snames *left;
+	struct snames *right;
+
+}*Tnames,tNode;
+
+
+Tnames insertTnames(Tnames names,char* name,int ntimes)
+{
+	if(!names)
+	{
+		names = malloc(sizeof(tNode));
+		names->name =malloc(strlen(name)+1);
+		names->name = strcpy(names->name,name);
+		names->ntimes = ntimes;
+		names->left = NULL;
+		names->right = NULL;
+		return names;
+	}
+	else
+	{
+		if(strcmp(names->name,name)< 0)
+				names->left = insertTnames(names->left,name,ntimes);
+		else
+			if(strcmp(names->name,name) > 0)
+			{
+				names->right = insertTnames(names->right,name,ntimes);
+			}
+			else
+			{
+				names->ntimes += ntimes;
+			}
+	}
+	return names;
+
+}
+
+Tnames co_autoYear(Catalog catalog,char* nome,Tnames names)
+{
+		if(catalog){
 
 			if(!strcmp(catalog->author,nome))
 			{
 				Relations rel = catalog->relations;
 				while(rel)
 				{
-					printf("%s, ", rel->name );
+					
+						names  = insertTnames(names,rel->name,rel->ntimes);
+					
+					
 					rel  = rel->next;
 				}
-				return;
+				
 			}
 			if(strcmp(catalog->author,nome)< 0)
 			{
-				co_autoYear(catalog->right,nome);
+				names = co_autoYear(catalog->right,nome,names);
 			}
 			if(strcmp(catalog->author,nome)> 0)
 			{
-				co_autoYear(catalog->left,nome);
+				names = co_autoYear(catalog->left,nome,names);
 			}
+		}
 
+return names;
+}
+
+Tnames mostTimes(Tnames names, Tnames aux)
+{
+	if(!aux)
+	{
+		aux = malloc(sizeof(tNode));
+		aux->name  = malloc(strlen(names->name)+1);
+				aux->name = strcpy(aux->name,names->name);
+				aux->ntimes = names->ntimes;
+				aux->left = NULL;
+				aux->right  =NULL;
+	}
+	if(names)
+	{
+		aux = mostTimes(names->left,aux);
+		if(aux)
+		{	
+			if(names->ntimes > aux->ntimes)
+			{
+				
+				aux->name  = malloc(strlen(names->name)+1);
+				aux->name = strcpy(aux->name,names->name);
+				aux->ntimes = names->ntimes;
+				aux->left = NULL;
+				aux->right = NULL;
+
+			}
+			if(names->ntimes == aux->ntimes)
+			{
+				if(strcmp(aux->name,names->name))
+				{
+				char * inc = malloc(strlen(aux->name) + 2 + strlen(names->name) +1 );
+				inc =strcpy(inc,aux->name);
+				inc = strcat(inc,", ");
+				inc = strcat(inc,names->name);
+				aux->name = inc;
+				}
+			}
+		}
+		aux = mostTimes(names->right,aux);
+	}
+	return aux;
 }
 
 void printCo_autores(Catalog* catalog,char* nome)
 {
-	printf("Os Co-autores de %s são\n",nome);
-	printf(":::Co-autores:::\n");
+	printf("O(s) Co-autor(es) de %s com mais publicações é(são)\n",nome);
+	printf(":::Co-autor(es):::\n");
+	Tnames names = NULL;
 
 	int i = 0;
 	while(i<56)
 	{
 		if(catalog[i])
 		{
-			co_autoYear(catalog[i],nome);
+			names  = co_autoYear(catalog[i],nome,names);
 		}
 		i++;
 	}
-	printf("\n====================\n");
+
+	
+	Tnames aux =NULL;
+	aux =  mostTimes(names,aux);
+
+	printf("%s com %d publicação(ões)\n",aux->name,aux->ntimes );
+	printf("====================\n");
 }
 
 Names getNames(Catalog branch,Names names)
