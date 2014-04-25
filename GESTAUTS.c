@@ -228,7 +228,9 @@ int main(int argc,char** argv)
 						}
 						else
 						{					
-							printNamesLetter(indice[hash(args[1])]);
+							int g = 0;
+							int c = 0;
+							printNamesLetter(indice[hash(args[1])],&g,&c);
 							printf("\n");
 							break;
 						}	

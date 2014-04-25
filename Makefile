@@ -4,7 +4,7 @@ clear:
 	clear
 
 clean:
-	rm -f *.o out.txt GESTAUTS *txt *csv
+	rm -f *.o GESTAUTS *txt *csv
 
 parser.o: Source/parser.c Headers/parser.h
 	gcc -c -ansi Source/parser.c

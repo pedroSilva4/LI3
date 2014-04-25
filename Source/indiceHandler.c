@@ -41,18 +41,35 @@ return names;
 }
 
 
-void printNamesLetter(Indice indice)
+void printNamesLetter(Indice indice,int *  n,int * c)
 {
-	
 	
 	if(indice)
 	{
-		printNamesLetter(indice->left);
-	
-		printf("%s, ",indice->name);
 		
-		printNamesLetter(indice->right);
-
+		printNamesLetter(indice->left,n,c);
+		int g = *n+1;
+		int k = *c+1;
+		if(k<= 2)
+		{
+		printf("=> %s\t",indice->name);
+		}
+		else
+		{
+			printf("=> %s\n",indice->name);
+			k= 0;
+		}
+		if(g>=60)
+		{
+			g=0;
+			char buff[10];
+			printf("\nPress any key to continue ...\n");
+			fgets(buff,strlen(buff)+1,stdin);
+		}
+		*n = g;
+		*c = k;
+		printNamesLetter(indice->right,n,c);
+		
 	}
 	
 }

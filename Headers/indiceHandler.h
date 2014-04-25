@@ -6,6 +6,6 @@
 
 Names getIndNames(Indice* indice,Names names);
 void averagelength(Indice* indice);
-void printNamesLetter(Indice indice);
+void printNamesLetter(Indice indice,int*,int* );
 int existsAuthor(Indice ind, char* name);
 #endif
