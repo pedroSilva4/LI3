@@ -6,6 +6,7 @@
 
 package gestauts;
 
+import gestauts.source.Catalog;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -54,6 +55,7 @@ public class GESTAUTS {
         // TODO code application logic here
         Crono timer = new Crono();
          Parser parser = new Parser();
+         Catalog catalog  =new Catalog();
        // BufferedReader bufferRead = new BufferedReader(new InputStreamReader(System.in));
 	//String s;
         JFileChooser chooser = new JFileChooser();
@@ -71,10 +73,15 @@ public class GESTAUTS {
         try 
         { 
             Pub_File file = new Pub_File(filepath, filename);
-            
             timer.start();
-           
+      
             parser.parsefile(file);
+            
+            for(Publication pub : file.getPublications())
+            {
+                catalog.add(pub);
+            }
+            
             System.out.println(timer.print());
             System.out.println(file.printInfo());
         }catch (FileNotFoundException ex2)

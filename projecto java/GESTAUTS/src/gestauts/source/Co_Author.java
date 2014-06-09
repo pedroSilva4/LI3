@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package src.gestauts.source;
+package gestauts.source;
 
 /**
  *
@@ -44,7 +44,9 @@ public class Co_Author {
     /**Modificadores**/
     public void setNtimes (int ntimesmod){this.n_times = ntimesmod;}
 
-    /**Cria cópia co_authors*/
+    /**Cria cópia co_author
+     */
+     @Override
     public Co_Author clone()
     {
         return new Co_Author(this);
@@ -60,4 +62,9 @@ public class Co_Author {
             return this.n_times == CA.n_times && this.author.equals(CA.author);
     }
 
-    }
+   void increment()
+   {
+       n_times++;
+   }
+
+}

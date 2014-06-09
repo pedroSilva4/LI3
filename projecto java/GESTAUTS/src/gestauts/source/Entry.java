@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package src.gestauts.source;
+package gestauts.source;
 
 import java.util.HashSet;
 
@@ -68,6 +68,33 @@ public class Entry {
             return false;
         
         return this.author.equals(entrada.author) && this.publications == entrada.publications && this.co_authors.equals(entrada.co_authors);
+    }
+    
+    void addCoAuthor(String person)
+    {
+       boolean b= false;
+      
+            for(Co_Author thing : co_authors)
+            {
+                 if(thing.daAutor().equals(person))
+                {
+                    b = true;
+                    thing.increment();
+                    break;
+                }
+            }
+           if(!b)
+           {
+               Co_Author newCA = new Co_Author(person,1);
+               co_authors.add(newCA);
+           }
+          
+       
+    }
+    
+    void increment()
+    {
+        this.publications++;
     }
 }
 
