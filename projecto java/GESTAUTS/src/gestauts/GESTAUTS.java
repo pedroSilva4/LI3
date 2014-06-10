@@ -17,10 +17,14 @@ import java.util.TreeSet;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import gestauts.source.Crono;
+import gestauts.source.MostArticlesComp;
 import gestauts.source.Parser;
 import gestauts.source.Pub_File;
 import gestauts.source.Publication;
 import java.io.FileNotFoundException;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -198,8 +202,81 @@ public class GESTAUTS {
                          System.out.println("Number of Authors that N1ever Published Alone: "+catalog.notSolo()+"\n");
                          break;
                      }
-                     case "":
+                     //consultas interativas
+                     case "interative":
                      { 
+                         if(tokens.length!=3)
+                         {
+                             
+                             System.out.println("WRONG ARGUMENTS!");
+                             break;
+                         }
+                         if(isNumeric(tokens[1]) && isNumeric(tokens[2]))
+                         {
+                             int min = Integer.parseInt(tokens[1]);
+                             int max = Integer.parseInt(tokens[2]);
+                             if(min < file.getSmallest_year() && max > file.getBiggest_year())
+                             {
+                                  System.out.println("Invalid Years!");
+                                  break;
+                             }
+                             else
+                             {
+                                boolean quit = false;
+                                while(!quit){
+                                System.out.print("Interative@Gestauts : ");    
+                                BufferedReader cmd = new BufferedReader(new InputStreamReader(System.in));
+                                String itCmd = cmd.readLine();
+                                String[] inTokens = itCmd.split(" ");
+                                    switch(inTokens[0])
+                                    {
+                                        case "morePubs":
+                                        {
+                                            if(inTokens.length!= 2 && isNumeric(inTokens[1]))
+                                            {   
+                                                System.out.println("WRONG ARGUMENTS!");
+                                                break;
+                                            }
+                                            
+                                            TreeMap<String,Integer> auths = new TreeMap<>(catalog.moretimes(min, max));
+                                            TreeSet<Map.Entry<String,Integer>> ordedByvalue = new TreeSet<>(new MostArticlesComp());
+                                             int i = 0;
+                                             int k = Integer.parseInt(inTokens[1]);
+                                             ordedByvalue.addAll(auths.entrySet());
+                                            TreeMap<String,Integer> auths2 = new TreeMap<>();
+                                             for(Map.Entry<String,Integer> entry : ordedByvalue)
+                                             {
+                                               if(i == k)
+                                               {break;}
+                                               
+                                               auths2.put(entry.getKey(), entry.getValue());
+                                               i++;
+                                             }
+                                             System.out.println("The "+k+" Authors with more Publications between ["+min+","+max+"]\n");
+                                             for(String s: auths2.keySet())
+                                             {
+                                                 System.out.println(s+" with "+auths2.get(s)+" publications\n");
+                                                 
+                                             }
+                                             break;
+                                        }
+                                        case "quit":
+                                        { 
+                                            quit = true;break;
+                                        }
+                                    }
+                                
+                                }
+                                break;
+                                
+                             }
+                         }
+                         else
+                         {
+                           System.out.println("WRONG ARGUMENTS!");
+                           break;   
+                         }
+                         
                      }
                      case "help":
                      {

@@ -125,4 +125,17 @@ public class Catalog {
                 res++;
         return res;
     }
+     public TreeMap<String,Integer> moretimes(int min,int max)
+     {
+          TreeMap<String,Integer> auths = new TreeMap<>();
+        for(int i= key(min);catalog.containsKey(i)&& i<= key(max);i++)
+        {
+            catalog.get(i).totpubs(auths);
+        }
+        
+        
+        
+        return auths;
+            
+     }
 }
