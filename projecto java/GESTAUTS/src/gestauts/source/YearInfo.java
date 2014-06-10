@@ -138,4 +138,22 @@ public class YearInfo {
         }
         
     }
+    
+  
+    
+    public  HashSet<AuthorsPair> pairs()
+    {
+        HashSet<AuthorsPair> pairs = new HashSet<>();
+       
+        
+        for(String s : yearNetwork.keySet() )
+        {
+             
+            pairs.addAll(yearNetwork.get(s).generatePairs());
+            
+            
+         }
+        return pairs;
+    }
 }
+

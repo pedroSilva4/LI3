@@ -6,6 +6,7 @@
 
 package gestauts;
 
+import gestauts.source.AuthorsPair;
 import gestauts.source.Catalog;
 import java.io.BufferedReader;
 import java.io.File;
@@ -18,6 +19,7 @@ import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import gestauts.source.Crono;
 import gestauts.source.MostArticlesComp;
+import gestauts.source.PairsComparator;
 import gestauts.source.Parser;
 import gestauts.source.Pub_File;
 import gestauts.source.Publication;
@@ -260,9 +262,32 @@ public class GESTAUTS {
                                              }
                                              break;
                                         }
+                                        case "pairs":
+                                        {
+                                            if(inTokens.length!= 2 && isNumeric(inTokens[1]))
+                                            {   
+                                                System.out.println("WRONG ARGUMENTS!");
+                                                break;
+                                            }
+                                            
+                                            TreeSet<AuthorsPair> pairs= new TreeSet<>(new PairsComparator());
+                                            pairs.addAll(catalog.pairs(min, max));
+                                            int i = 0;
+                                            int k = Integer.parseInt(inTokens[1]);
+                                            for(AuthorsPair p : pairs)
+                                            {
+                                                if(i==k){break;}
+                                                
+                                                System.out.println(p.toString());
+                                                i++;
+                                            }
+                                            System.out.println("\n");
+                                            break;
+                                        }
                                         case "quit":
                                         { 
-                                            quit = true;break;
+                                            quit = true;
+                                            break;
                                         }
                                     }
                                 

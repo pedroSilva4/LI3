@@ -6,6 +6,7 @@
 
 package gestauts.source;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 
 /**
@@ -117,9 +118,20 @@ public class Info {
     void soloInc()
     {
         this.publications++;
-        this.setSoloPubs(this.getSoloPubs() + 1);
+        this.soloPubs++;
     }
 
+    public HashSet<AuthorsPair> generatePairs()
+    {
+        HashSet<AuthorsPair> pairs = new HashSet<>();
+        
+        for(Co_Author co : co_authors ){
+            AuthorsPair p = new AuthorsPair(author,co.daAutor(),co.daNtimes());
+            pairs.add(p);
+        }
+    
+    return pairs;
+    }
     
 }
 

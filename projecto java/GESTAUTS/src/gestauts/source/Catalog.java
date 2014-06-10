@@ -125,7 +125,7 @@ public class Catalog {
                 res++;
         return res;
     }
-     public TreeMap<String,Integer> moretimes(int min,int max)
+    public TreeMap<String,Integer> moretimes(int min,int max)
      {
           TreeMap<String,Integer> auths = new TreeMap<>();
         for(int i= key(min);catalog.containsKey(i)&& i<= key(max);i++)
@@ -138,4 +138,34 @@ public class Catalog {
         return auths;
             
      }
+     
+    private void addToArrayPair(HashSet<AuthorsPair> pairs, AuthorsPair p)
+    {
+        boolean added = false;
+        for(AuthorsPair pair : pairs)
+        {
+            if(pair.equals(p)){
+                added = true;
+                pair.increment(p.getN_times());
+                break;
+            }
+        }
+        if(!added)
+        {
+            pairs.add(p);
+        }
+    }
+    
+    public HashSet<AuthorsPair> pairs(int min,int max)
+    {
+        HashSet<AuthorsPair> pairs = new HashSet<>();
+        
+        for(int i= key(min);catalog.containsKey(i)&& i<= key(max);i++)
+        {
+            ArrayList<AuthorsPair> aux = new ArrayList<>(catalog.get(i).pairs());
+            
+            pairs.addAll(aux);
+        }
+        return pairs;
+    }
 }
