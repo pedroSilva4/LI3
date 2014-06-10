@@ -39,7 +39,19 @@ public class Pub_File {
        biggest_year = 0;
        publications = new ArrayList<>();
    }
-
+   
+   public Pub_File(Pub_File pubs)
+   {
+       fileReader = pubs.getFileReader();
+       parsed = pubs.parsed;
+       name = pubs.name;
+       n_pubs = pubs.n_pubs;
+       n_authors = pubs.n_authors;
+       smallest_year  =pubs.smallest_year;
+       biggest_year = pubs.biggest_year;
+       publications = new ArrayList<>(pubs.getPublications());
+       
+   }
     /**
      * @return the parsed
      */

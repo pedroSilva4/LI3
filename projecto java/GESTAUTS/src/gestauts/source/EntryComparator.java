@@ -12,10 +12,10 @@ import java.util.Comparator;
  *
  * @author Pedro
  */
-public class EntryComparator implements Comparator<Entry>{
+public class EntryComparator implements Comparator<Info>{
 
     @Override
-    public int compare(Entry o1, Entry o2) {
+    public int compare(Info o1, Info o2) {
        return o1.daAuthor().compareTo(o2.daAuthor());
     }
 

@@ -7,8 +7,9 @@
 package gestauts.source;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.TreeMap;
 import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.TreeSet;
 
 /**
@@ -17,12 +18,12 @@ import java.util.TreeSet;
  */
 public class Catalog {
  
-    private HashMap<Integer,TreeSet<Entry>> catalog;
+    private TreeMap<Integer,YearInfo> catalog;
     
     
     public Catalog()
     {   
-       catalog = new HashMap<>();
+       catalog = new TreeMap<>();
     }
     
     public int key(int year)
@@ -41,59 +42,87 @@ public class Catalog {
       
       if(!catalog.containsKey(k))
       {
-          TreeSet<Entry> entry = new TreeSet<>(new EntryComparator());
-          for(String s:pub.getAuthors())
-          {
-             ArrayList<String> arr = new ArrayList<>(pub.getAuthors());
-             arr.remove(s);
-              HashSet<Co_Author> coAT  = new HashSet<>();
-             for(String cA :arr)
-             {
-                 coAT.add(new Co_Author(cA, 1));
-             }
-             entry.add(new Entry(s, 1, coAT));
-          }
-          catalog.put(k, entry);
+         YearInfo yearInfo  =new YearInfo();
+         yearInfo.add(pub);
+         catalog.put(k,yearInfo);
       }
       else
       {
-           TreeSet<Entry> replace = new TreeSet<>(catalog.get(k));
-          for(String auth: pub.getAuthors())
-          {
-            boolean b = false; 
-            ArrayList<String> coAT  = new ArrayList<>(pub.getAuthors());
-            coAT.remove(auth);
-            for(Entry ent : replace)
-            {
-               if(ent.daAuthor().equals(auth))
-               {
-                   b = true;
-                   ent.increment();
-                   
-                   for(String co : coAT)
-                    ent.addCoAuthor(co);
-                   
-                   break;
-               }
-               
-            }
-            
-            if(!b)
-            {
-                
-               HashSet<Co_Author> coAT2  = new HashSet<>();
-                for(String cA :coAT)
-                {
-                  coAT2.add(new Co_Author(cA, 1));
-                }
-               
-            
-                replace.add(new Entry(auth,1,coAT2));
-                catalog.put(k, replace);
-            }
-          
-          }
-          
+          catalog.get(k).add(pub);   
       }
+    }
+    
+    
+    //metodos das queries estaticas
+    
+    public int totAuthors()
+    {
+        int res =0;
+        HashSet<String> auths = new HashSet<>();
+        for(int k : catalog.keySet())
+        {
+            auths.addAll(catalog.get(k).keySet());
+        }
+        
+        res = auths.size();
+        return res;
+    }
+    
+    public int nPubs(String auth)
+    {
+        int res = 0;
+        
+        for(int i: catalog.keySet())
+        {
+            res += catalog.get(i).nPubs(auth);
+        }
+        
+        return res;
+    }
+    
+    public int uApubs()
+    {
+        int res =0;
+        for(int i: catalog.keySet())
+            res+=catalog.get(i).uApubs();
+        
+        return res;
+    }
+    
+    public int soloPubs()
+    {
+        
+         HashSet<String> solo = new HashSet<>();
+         TreeSet<String> notsolo = new TreeSet<>();
+        for(int i: catalog.keySet())
+            catalog.get(i).soloPubs(solo,notsolo);
+        
+        
+       
+        return solo.size();
+    }
+    public int notSolo()
+    {
+      
+        HashSet<String> notsolo = new HashSet<>();
+        TreeSet<String> solo = new TreeSet<>();
+        for(int i: catalog.keySet())
+         
+                  catalog.get(i).notSolo(notsolo,solo);
+        
+        return notsolo.size();
+    }
+    
+    public int morethan(int min)
+    {
+        int res = 0;
+        TreeMap<String,Integer> auths = new TreeMap<>();
+        for(int i:catalog.keySet())
+            catalog.get(i).totpubs(auths);
+        
+        for(String s: auths.keySet())
+            if(auths.get(s)>min)
+                res++;
+        return res;
     }
 }
