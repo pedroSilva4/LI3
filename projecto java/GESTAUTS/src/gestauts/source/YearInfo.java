@@ -16,6 +16,7 @@ import java.util.TreeSet;
  *
  * @author Pedro
 */
+
  public class YearInfo implements Serializable{
     
     private TreeMap<String,Info> yearNetwork;

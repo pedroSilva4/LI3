@@ -85,7 +85,7 @@ public class AuthorsPair implements Comparable<AuthorsPair> {
   @Override
     public String toString()
     {
-        return author1+" - "+author2+" : "+n_times+"\n";
+        return author1+" - "+author2+" : "+n_times+ "\n";
     }
     
     public String key2()

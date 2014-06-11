@@ -12,6 +12,7 @@ import java.util.Comparator;
  *
  * @author Pedro
  */
+
 public class PairsComparator implements Comparator<AuthorsPair>{
 
     @Override

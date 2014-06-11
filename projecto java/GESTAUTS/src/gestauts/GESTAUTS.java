@@ -58,6 +58,7 @@ public class GESTAUTS {
     public static void main(String[] args) 
     { 
         Crono timer = new Crono();
+        Crono timer2 = new Crono();
         Parser parser = new Parser();
         Catalog catalog  =new Catalog();
         JFileChooser chooser = new JFileChooser();
@@ -70,8 +71,8 @@ public class GESTAUTS {
     while(flag){
       try 
         {
-                 System.out.println(printMenu1()+"\n");
-                System.out.print("@Gestauts: ");
+             System.out.println(printMenu1()+"\n");
+             System.out.print("@Gestauts: ");
              BufferedReader bufferReader = new BufferedReader(new InputStreamReader(System.in));
              String s = bufferReader.readLine();
             
@@ -98,10 +99,10 @@ public class GESTAUTS {
                         catalog.setFilepath(filepath);
                         
                         timer.start();
-                        
+                        timer2.start();
                         
                         parser.parsefile(file);
-                    
+                        System.out.println("\nRead/Parse Timer: "+timer2.print());
                         for(Publication pub : file.getPublications())
                         {
                             catalog.add(pub.clone());
@@ -170,7 +171,7 @@ public class GESTAUTS {
             {   
                 try{
                  
-                System.out.print("Catalog@Gestauts : ");
+                 System.out.print("Catalog@Gestauts : ");
                  BufferedReader bufferReader = new BufferedReader(new InputStreamReader(System.in));
                  String command = bufferReader.readLine();
                  String[] tokens = command.split(" ");
@@ -178,13 +179,18 @@ public class GESTAUTS {
                  {
                      case "info":
                      {
-                        
-                             System.out.println("\n"+catalog.printInfo());
-                        break;
+                         timer.start();
+                         String print = catalog.printInfo();
+                         System.out.println("Elapsed time: "+timer.print());
+                         System.out.println("\n"+print);
+                         break;
                      }
                      case "authors":
                      {
-                         System.out.println("\nNumber of Authors : "+catalog.totAuthors()+"\n");
+                         timer.start();
+                         int authors = catalog.totAuthors();
+                         System.out.println("Elapsed time: "+timer.print());
+                         System.out.println("\nNumber of Authors : "+ authors +"\n");
                          break;
                      }
                      case "articles":
@@ -196,15 +202,21 @@ public class GESTAUTS {
                          }
                          if(tokens[1].equals("-u"))
                          {
-                            System.out.println("Publication with only one Author : "+ catalog.uApubs()+"\n");
+                             timer.start();
+                             int uApub = catalog.uApubs();
+                             System.out.println("Elapsed time: "+timer.print());
+                             System.out.println("Publication with only one Author : "+ uApub +"\n");
                              break;
                          }
                          if(tokens[1].equals("-n") && tokens.length == 3)
                          {
                              if(isNumeric(tokens[2]))
                              {
+                                 timer.start();
                                  int min = Integer.parseInt(tokens[2]);
-                                 System.out.println("Number of Authors with more than "+min+": "+catalog.morethan(min));
+                                 int morethan = catalog.morethan(min);
+                                 System.out.println("Elapsed time: "+timer.print());
+                                 System.out.println("Number of Authors with more than "+min+": "+morethan);
                                  break;
                              }
                              else
@@ -221,18 +233,24 @@ public class GESTAUTS {
                      }
                      case "soloAuthors":
                      {
-                         System.out.println("Number of Authors that Only Published Alone: "+catalog.soloPubs() +"\n");
+                         timer.start();
+                         int soloPubs = catalog.soloPubs();
+                         System.out.println("Elapsed time: "+timer.print());
+                         System.out.println("Number of Authors that Only Published Alone: "+ soloPubs +"\n");
                          
                          break;
                      }
                      case "notSolo":
                      {
-                         System.out.println("Number of Authors that N1ever Published Alone: "+catalog.notSolo()+"\n");
+                         timer.start();
+                         int notSolo = catalog.notSolo();
+                         System.out.println("Elapsed time: "+timer.print());
+                         System.out.println("Number of Authors that Never Published Alone: "+notSolo+"\n");
                          break;
                      }
                      //consultas interativas
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++//
-                     case "interative":
+                     case "interactive":
                      { 
                          if(tokens.length!=3)
                          {
@@ -251,13 +269,13 @@ public class GESTAUTS {
                              }
                              else
                              {
-                                boolean quit = false;
+                                 boolean quit = false;
                                  System.out.println(printInterative());
-                                while(!quit){
-                                System.out.print("Interative@Gestauts : ");    
-                                BufferedReader cmd = new BufferedReader(new InputStreamReader(System.in));
-                                String itCmd = cmd.readLine();
-                                String[] inTokens = itCmd.split(" ");
+                                 while(!quit){
+                                 System.out.print("Interactive@Gestauts : ");    
+                                 BufferedReader cmd = new BufferedReader(new InputStreamReader(System.in));
+                                 String itCmd = cmd.readLine();
+                                 String[] inTokens = itCmd.split(" ");
                                     switch(inTokens[0])
                                     {
                                         case "morePubs":
@@ -267,7 +285,7 @@ public class GESTAUTS {
                                                 System.out.println("WRONG ARGUMENTS!");
                                                 break;
                                             }
-                                            
+                                            timer.start();
                                             TreeMap<String,Integer> auths = new TreeMap<>(catalog.moretimes(min, max));
                                             TreeSet<Map.Entry<String,Integer>> ordedByvalue = new TreeSet<>(new MostArticlesComp());
                                              int i = 0;
@@ -282,6 +300,7 @@ public class GESTAUTS {
                                                auths2.put(entry.getKey(), entry.getValue());
                                                i++;
                                              }
+                                             System.out.println("Elapsed time: "+timer.print());
                                              System.out.println("The "+k+" Authors with more Publications between ["+min+","+max+"]\n");
                                              for(String s: auths2.keySet())
                                              {
@@ -297,11 +316,12 @@ public class GESTAUTS {
                                                 System.out.println("WRONG ARGUMENTS!");
                                                 break;
                                             }
-                                            
+                                            timer.start();
                                             TreeSet<AuthorsPair> pairs= new TreeSet<>(new PairsComparator());
                                             pairs.addAll(catalog.pairs(min, max));
                                             int i = 0;
                                             int k = Integer.parseInt(inTokens[1]);
+                                            System.out.println("Elapsed time: "+timer.print());
                                             for(AuthorsPair p : pairs)
                                             {
                                                 if(i==k){break;}
@@ -312,7 +332,7 @@ public class GESTAUTS {
                                             System.out.println("\n");
                                             break;
                                         }
-                                        case "commonCoats":
+                                        case "commonCoauts":
                                         {
                                             System.out.println();
                                             if(inTokens.length < 2)
@@ -320,27 +340,30 @@ public class GESTAUTS {
                                                 System.out.println("WRONG ARGUMENTS!");
                                                 break;
                                             }
-                                               int n =inTokens.length; 
-                                               StringBuilder sb = new StringBuilder();
-                                               for(int i= 1; i<n ;i++)
-                                                {
-                                                    if((i+1) != n)
-                                                    {
+                                                timer.start();
+                                                int n =inTokens.length; 
+                                                StringBuilder sb = new StringBuilder();
+                                                for(int i= 1; i<n ;i++)
+                                                 {
+                                                     if((i+1) != n)
+                                                     {
                                                         sb.append(inTokens[i]);
                                                         sb.append(" ");
-                                                    }
-                                                    else
+                                                     }
+                                                     else
                                                         sb.append(inTokens[i]);
-                                                }
+                                                 }
                                                
                                                String[] names = sb.toString().split("\\s*,\\s*");
                                                 if(names.length>3){
                                                                     System.out.println("ONLY 3 AUTHORS PERMITED");
+                                                                    timer.stop();
                                                                     break;
                                                                   }
                                                 if(names.length==1)
                                                 {
                                                     TreeSet<String> coats1 = new TreeSet<>(catalog.authorCoauts(min, max, names[0]));
+                                                    System.out.println("Elapsed time: "+timer.print());
                                                     System.out.println("Co-authors for "+names[0]+" between ["+min+","+max+"]:\n");
                                                     for(String s: coats1)
                                                         System.out.println(s);
@@ -350,6 +373,7 @@ public class GESTAUTS {
                                                 {
                                                     TreeSet<String> coats1 = new TreeSet<>(catalog.authorCoauts(min, max, names[0]));
                                                     TreeSet<String> coats2 = new TreeSet<>(catalog.authorCoauts(min, max, names[1]));
+                                                    System.out.println("Elapsed time: "+timer.print());
                                                    
                                                     System.out.println("Common Co-authors for "+names[0]+"and "+names[1]+" between ["+min+","+max+"]:\n");
                                                     for(String s : coats1)
@@ -361,6 +385,7 @@ public class GESTAUTS {
                                                     TreeSet<String> coats1 = new TreeSet<>(catalog.authorCoauts(min, max, names[0]));
                                                     TreeSet<String> coats2 = new TreeSet<>(catalog.authorCoauts(min, max, names[1]));
                                                     TreeSet<String> coats3 = new TreeSet<>(catalog.authorCoauts(min, max, names[2]));
+                                                    System.out.println("Elapsed time: "+timer.print());
 
                                                     System.out.println("Common Co-authors for "+names[0]+", "+names[1]+" and "+names[2]+" between ["+min+","+max+"]:\n");
                                                     for(String s : coats1)
@@ -378,6 +403,7 @@ public class GESTAUTS {
                                             if(max-min == 0) {System.out.println("\nCannot do this with this interval :["+min+","+max+"]\n");break;}
                                             else
                                             {
+                                                timer.start();
                                                 TreeSet<String> auths = new TreeSet<>(catalog.getAuthors(min));
                                                 ArrayList<TreeSet<String>> arr= new ArrayList<>();
                                                 for(int i = min+1;i<=max;i++)
@@ -398,6 +424,7 @@ public class GESTAUTS {
                                                     
                                                 }
                                                 auths.removeAll(removals);
+                                                System.out.println("Elapsed time: "+timer.print());
                                                 System.out.println("\nAuthors that published every year between ["+min+","+max+"]:\n");
                                                 for(String s : auths)
                                                 {
@@ -433,18 +460,20 @@ public class GESTAUTS {
                              
                          if(file.isParsed())
                          {
-                            int allPubs = file.getN_pubs();
+                             timer.start();
+                             int allPubs = file.getN_pubs();
                              HashSet<Publication> pubs = new HashSet<>(file.getPublications());
-                             
+                             System.out.println("Elapsed time: "+timer.print());
                              System.out.println("Total Lines: "+allPubs);
                              System.out.println("Duplicates : "+(allPubs - pubs.size())+"\n");
                          }
                          else
                          {
+                             timer.start();
                              parser.parsefile(file);
                              int allPubs = file.getN_pubs();
                              HashSet<Publication> pubs = new HashSet<>(file.getPublications());
-                             
+                             System.out.println("Elapsed time: "+timer.print());
                              System.out.println("Total Lines: "+allPubs);
                              System.out.println("Duplicates : "+(allPubs - pubs.size())+"\n");
                              
@@ -452,11 +481,12 @@ public class GESTAUTS {
                          }
                          else
                          {
+                             timer.start();
                              file = new Pub_File(catalog.getFilepath(), catalog.getFilename());
                              parser.parsefile(file);
                              int allPubs = file.getN_pubs();
                              HashSet<Publication> pubs = new HashSet<>(file.getPublications());
-                             
+                             System.out.println("Elapsed time: "+timer.print());
                              System.out.println("Total Lines: "+allPubs);
                              System.out.println("Duplicates : "+(allPubs - pubs.size())+"\n");
                            
@@ -465,7 +495,10 @@ public class GESTAUTS {
                      }
                      case "table":
                      {
-                         for(String s : catalog.yearTable())
+                         timer.start();
+                         ArrayList<String> yearTable = new ArrayList<>(catalog.yearTable());
+                         System.out.println("Elapsed time: "+timer.print());
+                         for(String s : yearTable)
                          {
                              System.out.println(s);
                          }
@@ -478,11 +511,14 @@ public class GESTAUTS {
                              System.out.println("WRONG ARGUMENTS!\n");
                              break;
                          }
+                         timer.start();
                          char k = tokens[1].charAt(0);
                          int count = 0;
                          int i = 0;
                          int p = 0;
-                         for(String s : catalog.byLetter(k))
+                         TreeSet<String> byLetter = new TreeSet<>(catalog.byLetter(k));
+                         System.out.println("Elapsed time: "+timer.print());
+                         for(String s : byLetter)
                          {
                              i++;
                              p++;
@@ -522,9 +558,10 @@ public class GESTAUTS {
                              System.out.println("WRONG ARGUMENTS!\n");
                              break;
                          }
+                         timer.start();
                          int year = 0;
                         
-                          year = Integer.parseInt(tokens[1]);
+                         year = Integer.parseInt(tokens[1]);
                          
                          int n = tokens.length;
                          StringBuilder sb = new StringBuilder();
@@ -538,7 +575,8 @@ public class GESTAUTS {
                              else
                                  sb.append(tokens[i]);
                          } 
-                         TreeSet<String> coauths = catalog.coAuths(year, sb.toString());
+                         TreeSet<String> coauths = new TreeSet<>(catalog.coAuths(year, sb.toString()));
+                         System.out.println("Elapsed time: "+timer.print());
                          System.out.println("Year: " + year);
                          System.out.println("Author: " + sb);
                          System.out.println("Number of publications: " + coauths.first());
@@ -558,6 +596,7 @@ public class GESTAUTS {
                              System.out.println("WRONG ARGUMENTS!\n");
                              break;
                          }
+                         timer.start();
                          int n = tokens.length;
                          StringBuilder sb = new StringBuilder();
                          for(int i=1; i<n ;i++)
@@ -569,12 +608,14 @@ public class GESTAUTS {
                              }
                              else
                                  sb.append(tokens[i]);
-                         } 
+                         }
+                         TreeSet<String>allCoauths = new TreeSet<>(catalog.allCoauths(sb.toString()));
+                         System.out.println("Elapsed time: "+timer.print());
                          System.out.println("Author: " + sb);
                          System.out.println("Coauthors: ");
                          int couts = 0;
                          int i=0,p=0;
-                         for(String s : catalog.allCoauths(sb.toString()))
+                         for(String s : allCoauths)
                          {
                              
                              i++;
@@ -602,25 +643,30 @@ public class GESTAUTS {
                                  {break;}
                              }
                          }
-                         System.out.println("Numner of Co-authors : "+couts);
+                         System.out.println("Number of Co-authors : "+couts);
                          break;
                      }
                      case "save":
                      {
                          if(tokens.length!=2){System.out.println("WRONG ARGUMENTS"); break;}
+                         timer.start();
                          catalog.save(tokens[1]);
+                         System.out.println("Elapsed time: "+timer.print());
+                         System.out.println("File saved.");
                          break;
                      }
                      case "load":
                      {
                          if(tokens.length!=2){System.out.println("WRONG ARGUMENTS"); break;}
+                         timer.start();
                          Catalog cat = catalog.load(tokens[1]);
                          
                          if(cat!=null)
                          {
-                            System.out.println(cat.soloPubs());
                             catalog = new Catalog(cat);
                          }
+                         System.out.println("Elapsed time: "+timer.print());
+                         System.out.println("File loaded.");
                          break;
                      }
                      case "help":
@@ -677,14 +723,18 @@ public class GESTAUTS {
        sb.append("\t\t#                          CATALOG                              #\n");
        sb.append("\t\t#                    info -> File Information                   #\n");
        sb.append("\t\t#                   authors ->Number of Authors                 #\n");
-       sb.append("\t\t#articles -n number -> n Authors with more than \"number\" pubs   #\n");
+       sb.append("\t\t# articles -n number -> n Authors with more than \"number\" pubs  #\n");
        sb.append("\t\t#           articles -u ->Number of articles 1 one Author       #\n");
        sb.append("\t\t#          soloAuthors -> Authors that only published alone     #\n");
        sb.append("\t\t#          notSolo -> Authors that never published alone        #\n");
-       sb.append("\t\t#     interative \"year1\" \"year2\" -> Enter interative mode      #\n");
+       sb.append("\t\t# table -> Display a table with number of publications per year #\n");       
+       sb.append("\t\t#     interactive \"year1\" \"year2\" -> Enter interactive mode       #\n");
        sb.append("\t\t#     duplicates -> Show number of duplicated lines in file     #\n");
-       sb.append("\t\t#                save \"path\" -> saves the catalog              #\n");
-       sb.append("\t\t#                load \"path\" ->loads a new Catalog             #\n");
+       sb.append("\t\t#     startsWith C -> Display authors' names starting with c    #\n");
+       sb.append("\t\t#     coauthsYear Y N -> Show coauthors of N in year Y          #\n");
+       sb.append("\t\t#     allCoauthors N -> Show all coauthors of N                 #\n");       
+       sb.append("\t\t#                save \"path\" -> saves the catalog               #\n");
+       sb.append("\t\t#                load \"path\" ->loads a new Catalog              #\n");
        sb.append("\t\t#                      help - Show Menu                         #\n");
        sb.append("\t\t#                    exit - Close the Program                   #\n");
        sb.append("\t\t#                                                               #\n");
@@ -696,12 +746,12 @@ public class GESTAUTS {
     {
        StringBuilder sb = new  StringBuilder();
        sb.append("\t\t#==================GESTATUS==================#\n");
-       sb.append("\t\t#               Interative Mode              #\n");
+       sb.append("\t\t#               Interactive Mode              #\n");
        sb.append("\t\t#    morePubs x - x Authors with more Pubs   #\n");
        sb.append("\t\t#     pairs x - x pairs with mores Pubs      #\n");
-       sb.append("\t\t#  commonCoats a1,a2,a3 - Common Co-authors  #\n");
+       sb.append("\t\t#  commonCoauts a1,a2,a3 - Common Co-authors  #\n");
        sb.append("\t\t#allyears - Authors that published every year#\n");
-       sb.append("\t\t#       quit - leave interative mode         #\n");
+       sb.append("\t\t#       quit - leave interactive mode         #\n");
        sb.append("\t\t#                                            #\n");
        sb.append("\t\t#============================================#\n");
        return sb.toString();

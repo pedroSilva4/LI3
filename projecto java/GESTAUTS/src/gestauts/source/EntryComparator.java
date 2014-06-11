@@ -12,6 +12,7 @@ import java.util.Comparator;
  *
  * @author Pedro
  */
+
 public class EntryComparator implements Comparator<Info>{
 
     @Override

@@ -12,6 +12,7 @@ import java.io.Serializable;
  *
  * @author Pedro
  */
+
 public class Co_Author implements Serializable{
     
      private String author;

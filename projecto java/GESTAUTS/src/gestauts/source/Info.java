@@ -14,6 +14,7 @@ import java.util.HashSet;
  *
  * @author Pedro
  */
+
 public class Info implements Serializable{
     
     
