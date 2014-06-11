@@ -383,4 +383,51 @@ public class Catalog implements Serializable{
   
          return s.toString();
     }
+    
+     public ArrayList<String> yearTable()
+    {
+        ArrayList<String> yearPub = new ArrayList<>();
+
+        for (int i : catalog.keySet())
+        {
+            yearPub.add("Year: " + (i + 1960) + "\tNumber of publications: " + catalog.get(i).getYearPubs());
+        }
+        return yearPub;
+    }
+    
+    public TreeSet<String> byLetter(char letter)
+    {
+        TreeSet<String> names = new TreeSet<>();
+        TreeMap<String, Integer> auths = new TreeMap<>();
+        for (int i : catalog.keySet())
+        {
+            catalog.get(i).totpubs(auths);
+        }
+        for(String s : auths.keySet())
+        {
+            if(s.charAt(0) == letter)
+            {
+                names.add(s);
+            }
+        }
+        return names;
+    }
+    
+    public TreeSet<String> coAuths(int yea, String name)
+    {
+        TreeSet<String> coauths = catalog.get(key(yea)).pubsCoauth(name);
+        //coauths = catalog.get(key(yea)).pubsCoauth(name);
+        return coauths;
+        
+    }
+    
+    public TreeSet<String> allCoauths(String name)
+    {
+        TreeSet<String> coauths = new TreeSet<>();
+        for(int i : catalog.keySet())
+        {
+                coauths.addAll(catalog.get(i).pubsAllCoauth(name));
+        }
+        return coauths;
+    }
 }

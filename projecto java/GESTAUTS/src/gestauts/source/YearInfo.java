@@ -19,10 +19,17 @@ import java.util.TreeSet;
  public class YearInfo implements Serializable{
     
     private TreeMap<String,Info> yearNetwork;
+    private int yearTotal;
     
     public YearInfo()
     {
         yearNetwork = new TreeMap<>();
+        yearTotal=0;
+    }
+    
+      public int getYearPubs()
+    {
+        return this.yearTotal;
     }
     
     public void add(Publication pub)
@@ -71,7 +78,7 @@ import java.util.TreeSet;
                  }
             }
         }
-        
+        yearTotal++;
     }
     
     public ArrayList<String> keySet()
@@ -163,5 +170,42 @@ import java.util.TreeSet;
         else return new HashSet<>();
         
     }
+    
+    public TreeSet<String> pubsCoauth(String auth)
+    {
+        Integer pubs = 0;
+        TreeSet<String>coauts = new TreeSet<>();
+        for(String s : yearNetwork.keySet())
+        {
+            if(s.equals(auth) && !yearNetwork.get(s).daCoAuthor().isEmpty())
+            {
+                for(Co_Author co : yearNetwork.get(s).daCoAuthor())
+                {
+                    coauts.add(co.daAutor());
+                    pubs+=co.daNtimes();
+                }
+             
+            }        
+        }
+        coauts.add(pubs.toString());
+        return coauts;
+    }
+    
+    public TreeSet<String> pubsAllCoauth(String auth)
+    {
+        TreeSet<String>coauts = new TreeSet<>();
+        for(String s : yearNetwork.keySet())
+        {
+            if(s.equals(auth) && !yearNetwork.get(s).daCoAuthor().isEmpty())
+            {
+                for(Co_Author co : yearNetwork.get(s).daCoAuthor())
+                {
+                    coauts.add(co.daAutor());
+                }
+            }        
+        }
+        return coauts;
+    }
+    
 }
 

@@ -132,9 +132,12 @@ public class GESTAUTS {
                         
                          
                         
+                         timer.start();
                          
                          catalog = new Catalog(catalog.load(filepath));
                          flag =false;
+                         
+                         System.out.println("TIMER : "+timer.print());
                          //file = new Pub_File(catalog.getFilepath(),catalog.getFilename());
                     }
                     break;
@@ -460,6 +463,148 @@ public class GESTAUTS {
                          }
                          break;
                      }
+                     case "table":
+                     {
+                         for(String s : catalog.yearTable())
+                         {
+                             System.out.println(s);
+                         }
+                         break;
+                     }
+                     case "startsWith":
+                     {
+                         if(tokens.length < 2)
+                         {
+                             System.out.println("WRONG ARGUMENTS!\n");
+                             break;
+                         }
+                         char k = tokens[1].charAt(0);
+                         int count = 0;
+                         int i = 0;
+                         int p = 0;
+                         for(String s : catalog.byLetter(k))
+                         {
+                             i++;
+                             p++;
+                             if(p<3){
+                             System.out.print("-"+s+"\t");
+                             }
+                            
+                             if(p==3)
+                             {
+                                 System.out.print("-"+s+"\n");
+                                 p=0;
+                             }
+                             count++;
+                             
+                             
+                             if(i==60){
+                             BufferedReader o = new BufferedReader(new InputStreamReader(System.in));
+                             String op = o.readLine();
+                             i=0;
+                             p=0;
+                             
+                                 System.out.println();
+                                 if(op.equals("q") || op.equals("quit"))
+                                 {break;}
+                             }
+                            
+                         }
+                     
+                        System.out.println("Number of authors: " + count);
+                        break;
+                     }
+                     
+                     case "coauthsYear":
+                     {
+                         if(tokens.length < 3 && isNumeric(tokens[1]))
+                         {
+                             System.out.println("WRONG ARGUMENTS!\n");
+                             break;
+                         }
+                         int year = 0;
+                        
+                          year = Integer.parseInt(tokens[1]);
+                         
+                         int n = tokens.length;
+                         StringBuilder sb = new StringBuilder();
+                         for(int i= 2; i<n ;i++)
+                         {
+                             if((i+1) != n)
+                             {
+                                 sb.append(tokens[i]);
+                                 sb.append(" ");
+                             }
+                             else
+                                 sb.append(tokens[i]);
+                         } 
+                         TreeSet<String> coauths = catalog.coAuths(year, sb.toString());
+                         System.out.println("Year: " + year);
+                         System.out.println("Author: " + sb);
+                         System.out.println("Number of publications: " + coauths.first());
+                         coauths.remove(coauths.first());
+                         System.out.println("Coauthors: ");
+                         for(String s : coauths)
+                         {
+                             System.out.println("-" + s);
+                         }      
+                         break;
+                     }
+                     
+                     case "allCoauthors":
+                     {
+                         if(tokens.length < 2)
+                         {
+                             System.out.println("WRONG ARGUMENTS!\n");
+                             break;
+                         }
+                         int n = tokens.length;
+                         StringBuilder sb = new StringBuilder();
+                         for(int i=1; i<n ;i++)
+                         {
+                             if((i+1) != n)
+                             {
+                                 sb.append(tokens[i]);
+                                 sb.append(" ");
+                             }
+                             else
+                                 sb.append(tokens[i]);
+                         } 
+                         System.out.println("Author: " + sb);
+                         System.out.println("Coauthors: ");
+                         int couts = 0;
+                         int i=0,p=0;
+                         for(String s : catalog.allCoauths(sb.toString()))
+                         {
+                             
+                             i++;
+                             p++;
+                             if(p<2){
+                             System.out.print("-"+s+"\t");
+                             }
+                            
+                             if(p==2)
+                             {
+                                 System.out.print("-"+s+"\n");
+                                 p=0;
+                             }
+                            
+                             
+                             couts++;
+                             if(i==10){
+                             BufferedReader o = new BufferedReader(new InputStreamReader(System.in));
+                             String op = o.readLine();
+                             i=0;
+                             p=0;
+                             
+                                 System.out.println();
+                                 if(op.equals("q") || op.equals("quit"))
+                                 {break;}
+                             }
+                         }
+                         System.out.println("Numner of Co-authors : "+couts);
+                         break;
+                     }
                      case "save":
                      {
                          if(tokens.length!=2){System.out.println("WRONG ARGUMENTS"); break;}
@@ -483,6 +628,7 @@ public class GESTAUTS {
                          System.out.println(printMenu2()+"\n");
                          break;
                      }
+                     case "":break;
                      case "exit":
                      {
                          return;
