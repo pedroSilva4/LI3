@@ -728,7 +728,7 @@ public class GESTAUTS {
        sb.append("\t\t#          soloAuthors -> Authors that only published alone     #\n");
        sb.append("\t\t#          notSolo -> Authors that never published alone        #\n");
        sb.append("\t\t# table -> Display a table with number of publications per year #\n");       
-       sb.append("\t\t#     interactive \"year1\" \"year2\" -> Enter interactive mode       #\n");
+       sb.append("\t\t#     interactive \"year1\" \"year2\" -> Enter interactive mode      #\n");
        sb.append("\t\t#     duplicates -> Show number of duplicated lines in file     #\n");
        sb.append("\t\t#     startsWith C -> Display authors' names starting with c    #\n");
        sb.append("\t\t#     coauthsYear Y N -> Show coauthors of N in year Y          #\n");

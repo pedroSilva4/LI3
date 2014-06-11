@@ -91,7 +91,7 @@ public class Info implements Serializable{
                         &&this.co_authors.equals(entrada.co_authors);
     }
     
-    void addCoAuthor(String person)
+    public void addCoAuthor(String person)
     {
        boolean b= false;
       
@@ -113,11 +113,11 @@ public class Info implements Serializable{
        
     }
     
-    void increment()
+    public void increment()
     {
         this.publications++;
     }
-    void soloInc()
+    public void soloInc()
     {
         this.publications++;
         this.soloPubs++;
