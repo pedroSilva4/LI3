@@ -6,6 +6,7 @@
 
 package gestauts.source;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.TreeMap;
@@ -14,8 +15,8 @@ import java.util.TreeSet;
 /**
  *
  * @author Pedro
- */
-public class YearInfo {
+*/
+ public class YearInfo implements Serializable{
     
     private TreeMap<String,Info> yearNetwork;
     
@@ -154,6 +155,13 @@ public class YearInfo {
             
          }
         return pairs;
+    }
+    
+    public HashSet<String> authorCoauts(String auth)
+    {
+        if(yearNetwork.containsKey(auth)) return yearNetwork.get(auth).getCoatsNames();
+        else return new HashSet<>();
+        
     }
 }
 

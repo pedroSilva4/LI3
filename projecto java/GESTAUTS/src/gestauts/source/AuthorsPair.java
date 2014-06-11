@@ -10,7 +10,7 @@ package gestauts.source;
  *
  * @author Pedro
  */
-public class AuthorsPair {
+public class AuthorsPair implements Comparable<AuthorsPair> {
     
  private String author1;
  private String author2;
@@ -86,5 +86,24 @@ public class AuthorsPair {
     public String toString()
     {
         return author1+" - "+author2+" : "+n_times+"\n";
+    }
+    
+    public String key2()
+    {
+        return author2+" - "+author1;
+    }
+     public String key1()
+    {
+        return author1+" - "+author2;
+    }
+
+    @Override
+    public int compareTo(AuthorsPair o) {
+        if((author1.equals(o.author1) || author1.equals(o.author2)) && (author2.equals(o.author1)|| author2.equals(o.author2)))
+            return 0;
+        else {
+                if(n_times>o.getN_times()) return 1;
+                else return -1;
+        }
     }
 }

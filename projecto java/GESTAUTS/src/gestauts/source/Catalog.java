@@ -6,25 +6,142 @@
 
 package gestauts.source;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.ObjectStreamException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.TreeMap;
 import java.util.HashSet;
 import java.util.ArrayList;
 import java.util.TreeSet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author Pedro
  */
-public class Catalog {
+public class Catalog implements Serializable{
  
     private TreeMap<Integer,YearInfo> catalog;
-    
+    private String filepath;
+    private String filename;
+    private int n_pubs;
+    private int n_authors;
+    private int smallest_year;
+    private int biggest_year;
     
     public Catalog()
     {   
        catalog = new TreeMap<>();
+       filepath = "";
+       filename = ""; 
+       n_pubs= 0;
+       n_authors = 0;
+       smallest_year =0;
+       biggest_year = 0;
     }
+     public Catalog(Catalog cat)
+     {
+         catalog = new TreeMap<>(cat.catalog);
+         filepath = cat.filepath;
+         filename = cat.filename;
+          n_pubs= cat.n_pubs;
+          n_authors = cat.n_authors;
+          smallest_year =cat.smallest_year;
+          biggest_year = cat.biggest_year;
+         
+     }
+        /**
+     * @return the n_pubs
+     */
+    public int getN_pubs() {
+        return n_pubs;
+    }
+
+    /**
+     * @return the n_authors
+     */
+    public int getN_authors() {
+        return n_authors;
+    }
+
+    /**
+     * @return the smallest_year
+     */
+    public int getSmallest_year() {
+        return smallest_year;
+    }
+
+    /**
+     * @return the biggest_year
+     */
+    public int getBiggest_year() {
+        return biggest_year;
+    }
+
+    /**
+     * @param n_pubs the n_pubs to set
+     */
+    public void setN_pubs(int n_pubs) {
+        this.n_pubs = n_pubs;
+    }
+
+    /**
+     * @param n_authors the n_authors to set
+     */
+    public void setN_authors(int n_authors) {
+        this.n_authors = n_authors;
+    }
+
+    /**
+     * @param smallest_year the smallest_year to set
+     */
+    public void setSmallest_year(int smallest_year) {
+        this.smallest_year = smallest_year;
+    }
+
+    /**
+     * @param biggest_year the biggest_year to set
+     */
+    public void setBiggest_year(int biggest_year) {
+        this.biggest_year = biggest_year;
+    }
+    
+
+     /**
+     * @return the filepath
+     */
+    public String getFilepath() {
+        return filepath;
+    }
+
+    /**
+     * @return the filename
+     */
+    public String getFilename() {
+        return filename;
+    }
+
+    /**
+     * @param filepath the filepath to set
+     */
+    public void setFilepath(String filepath) {
+        this.filepath = filepath;
+    }
+
+    /**
+     * @param filename the filename to set
+     */
+    public void setFilename(String filename) {
+        this.filename = filename;
+    }
+    
     
     public int key(int year)
     {
@@ -139,33 +256,131 @@ public class Catalog {
             
      }
      
-    private void addToArrayPair(HashSet<AuthorsPair> pairs, AuthorsPair p)
+    private void addToArrayPair(TreeMap<String,AuthorsPair> pairs, AuthorsPair p)
     {
         boolean added = false;
-        for(AuthorsPair pair : pairs)
-        {
-            if(pair.equals(p)){
+       
+            if(pairs.containsKey(p.key1())){
                 added = true;
-                pair.increment(p.getN_times());
-                break;
+                pairs.get(p.key1()).increment(p.getN_times());
             }
-        }
+           
         if(!added)
         {
-            pairs.add(p);
+             if(pairs.containsKey(p.key2())){
+                added = true;
+                pairs.get(p.key2()).increment(p.getN_times());
+             }
+            if(!added)
+            pairs.put(p.key1(),p);
         }
     }
     
-    public HashSet<AuthorsPair> pairs(int min,int max)
+    public TreeSet<AuthorsPair> pairs(int min,int max)
     {
-        HashSet<AuthorsPair> pairs = new HashSet<>();
+        TreeMap<String,AuthorsPair> pairs = new TreeMap<>();
         
         for(int i= key(min);catalog.containsKey(i)&& i<= key(max);i++)
         {
             ArrayList<AuthorsPair> aux = new ArrayList<>(catalog.get(i).pairs());
-            
-            pairs.addAll(aux);
+           
+            for(AuthorsPair p : aux)
+            {
+                addToArrayPair(pairs, p);
+            }
         }
-        return pairs;
+        return new TreeSet<>(pairs.values());
+    }
+    public TreeSet<String> authorCoauts(int min, int max,String auth)
+    {
+        TreeSet<String> coats = new TreeSet<>();
+        
+        for(int i= key(min);catalog.containsKey(i)&& i<= key(max);i++)
+        {
+            coats.addAll(catalog.get(i).authorCoauts(auth));
+        }  
+        
+        return coats;
+    }
+    
+    public TreeSet<String> getAuthors(int year)
+    {
+        int i = key(year);
+        
+        return new TreeSet<>(catalog.get(i).keySet());
+        
+    }
+    
+    public void save(String path)
+    {
+           FileOutputStream fos;
+           ObjectOutputStream oos;
+        try {
+            fos = new FileOutputStream(path);
+            oos = new ObjectOutputStream(fos);
+            
+            oos.writeObject(getN_pubs());
+            oos.writeObject(getN_authors());
+            oos.writeObject(getSmallest_year());
+            oos.writeObject(getBiggest_year());
+            oos.writeObject(catalog);
+            oos.writeObject(filepath);
+            oos.writeObject(filename);
+            
+            
+            oos.close();
+            
+            
+             
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(Catalog.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(Catalog.class.getName()).log(Level.SEVERE, null, ex);
+        }
+     
+    }
+    
+    public Catalog load(String path)
+    {
+           FileInputStream fis;
+           ObjectInputStream ois;
+           Catalog cat = new Catalog();
+        try {
+           
+              fis = new FileInputStream(path);
+              ois = new ObjectInputStream(fis);
+
+                    cat.setN_pubs((int)ois.readObject());
+                    cat.setN_authors((int)ois.readObject());
+                    cat.setSmallest_year((int)ois.readObject()) ;
+                    cat.setBiggest_year((int)ois.readObject()) ;
+                    cat.catalog = new TreeMap<>((TreeMap<Integer,YearInfo>)ois.readObject());
+                    cat.filepath = (String) ois.readObject();
+                    cat.filename = (String) ois.readObject();
+                    
+      
+
+                 ois.close();
+             return cat;
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(Catalog.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(Catalog.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Catalog.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+
+     public String printInfo()
+    {
+        StringBuilder s  =new StringBuilder();
+         s = s.append("Name: ").append(this.filename);
+         s = s.append("\nPublications: ").append(this.n_pubs);
+         s = s.append("\nAuthors: ").append(this.n_authors);
+         s = s.append("\nTime Interval: [").append(this.smallest_year).append(",")
+                                          .append(this.biggest_year).append("]\n");
+  
+         return s.toString();
     }
 }

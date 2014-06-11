@@ -16,11 +16,8 @@ public class PairsComparator implements Comparator<AuthorsPair>{
 
     @Override
     public int compare(AuthorsPair o1, AuthorsPair o2) {
-        int res =0 ;
-       if(o1.getN_times()>=o2.getN_times()) res = -1;
-       else res= 1;
-       
-       return res;
+    
+       return (-1)*o1.compareTo(o2);
     }
 
    

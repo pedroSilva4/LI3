@@ -6,6 +6,7 @@
 
 package gestauts.source;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 
@@ -13,7 +14,7 @@ import java.util.HashSet;
  *
  * @author Pedro
  */
-public class Info {
+public class Info implements Serializable{
     
     
     private String author;
@@ -133,5 +134,13 @@ public class Info {
     return pairs;
     }
     
+    public HashSet<String> getCoatsNames()
+    {
+        HashSet<String> coats = new HashSet<>();
+        for(Co_Author co: co_authors)
+            coats.add(co.daAutor());
+        
+        return coats;
+    }
 }
 

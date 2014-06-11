@@ -6,13 +6,15 @@
 
 package gestauts.source;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Objects;
 
 /**
  *
  * @author Pedro
  */
-public class Publication {
+public class Publication implements Serializable{
         private ArrayList<String> authors;
         private int year;
 
@@ -84,5 +86,25 @@ public class Publication {
     public Publication clone()
     {
         return new Publication(this);
+    }
+    
+        @Override
+    public boolean equals(Object pub)
+    {
+        if(this == pub) return true;
+            
+        if(pub == null || pub.getClass()!= this.getClass()) return false;
+        
+        Publication p = (Publication) pub;
+        
+        return this.authors.equals(p.authors) && this.year == p.year;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 67 * hash + Objects.hashCode(this.authors);
+        hash = 67 * hash + this.year;
+        return hash;
     }
 }
