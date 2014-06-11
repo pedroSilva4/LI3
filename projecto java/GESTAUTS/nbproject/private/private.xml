@@ -3,6 +3,7 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+<<<<<<< HEAD
             <file>file:/home/andre/Documents/LI3/projecto%20java/GESTAUTS/src/gestauts/source/PairsComparator.java</file>
             <file>file:/home/andre/Documents/LI3/projecto%20java/GESTAUTS/src/gestauts/source/MostArticlesComp.java</file>
             <file>file:/home/andre/Documents/LI3/projecto%20java/GESTAUTS/src/gestauts/source/YearInfo.java</file>
@@ -16,6 +17,12 @@
             <file>file:/home/andre/Documents/LI3/projecto%20java/GESTAUTS/src/gestauts/source/Parser.java</file>
             <file>file:/home/andre/Documents/LI3/projecto%20java/GESTAUTS/src/gestauts/source/Crono.java</file>
             <file>file:/home/andre/Documents/LI3/projecto%20java/GESTAUTS/src/gestauts/source/Publication.java</file>
+=======
+            <file>file:/C:/Users/Pedro/Documents/GitHub/LI3/projecto%20java/GESTAUTS/src/gestauts/GESTAUTS.java</file>
+            <file>file:/C:/Users/Pedro/Documents/GitHub/LI3/projecto%20java/GESTAUTS/src/gestauts/source/YearInfo.java</file>
+            <file>file:/C:/Users/Pedro/Documents/GitHub/LI3/projecto%20java/GESTAUTS/src/gestauts/source/MostArticlesComp.java</file>
+            <file>file:/C:/Users/Pedro/Documents/GitHub/LI3/projecto%20java/GESTAUTS/src/gestauts/source/Catalog.java</file>
+>>>>>>> aa98be5f2ec9ce7518a0c191164b62b9234ad965
         </group>
     </open-files>
 </project-private>
