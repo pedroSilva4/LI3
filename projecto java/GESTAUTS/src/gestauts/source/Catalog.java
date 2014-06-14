@@ -365,12 +365,15 @@ public class Catalog implements Serializable{
              return cat;
         } catch (FileNotFoundException ex) {
             Logger.getLogger(Catalog.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
         } catch (IOException ex) {
             Logger.getLogger(Catalog.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(Catalog.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
         }
-        return null;
+       
     }
 
      public String printInfo()

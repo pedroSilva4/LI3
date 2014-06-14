@@ -134,10 +134,13 @@ public class GESTAUTS {
                          
                         
                          timer.start();
+                         Catalog cat = catalog.load(filepath);
                          
-                         catalog = new Catalog(catalog.load(filepath));
-                         flag =false;
+                         if(cat!= null){
+                         catalog = new Catalog(cat);
                          
+                          flag = false;
+                         }
                          System.out.println("TIMER : "+timer.print());
                          //file = new Pub_File(catalog.getFilepath(),catalog.getFilename());
                     }
@@ -664,9 +667,13 @@ public class GESTAUTS {
                          if(cat!=null)
                          {
                             catalog = new Catalog(cat);
+                            System.out.println("File loaded.");
+                         }
+                         else
+                         {
+                                System.out.println("File not loaded An ERROR HAS OCCURRED");
                          }
                          System.out.println("Elapsed time: "+timer.print());
-                         System.out.println("File loaded.");
                          break;
                      }
                      case "help":
